@@ -46,9 +46,11 @@ check_confidence.default <- function(
   summarised_data <- data |>
     dplyr::ungroup() |>
     dplyr::summarise(
-      mean_confidence = mean(.data$confidence, na.rm = TRUE),
-      q1 = stats::quantile(.data$confidence, probs = 0.25),
-      q3 = stats::quantile(.data$confidence, probs = 0.75),
+      median_conf = stats::median(.data$confidence, na.rm = TRUE),
+      q1_conf = stats::quantile(.data$confidence, probs = 0.25),
+      q3_conf = stats::quantile(.data$confidence, probs = 0.75),
+      min_conf = min(.data$confidence, na.rm = TRUE),
+      max_conf = max(.data$confidence, na.rm = TRUE),
       .by = by
     ) |>
     suppressWarnings()
