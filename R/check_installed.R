@@ -2,7 +2,7 @@
 check_anivis <- function() {
   rlang::check_installed(
     "anivis",
-    reason = "to use check_confidence()",
+    reason = "to visualise checks",
     action = function(...) {
       utils::install.packages(
         'anivis',
