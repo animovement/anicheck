@@ -11,7 +11,7 @@ tidy data frame that can be visualized with standard plotting functions."></head
 
     <a class="navbar-brand me-2" href="../index.html">anicheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,14 +79,20 @@ group the data before summarising. If <code>NULL</code>, the function defaults t
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A tibble/data frame with one row per group defined by <code>by</code>,
-containing the following columns:</p><dl><dt>mean_confidence</dt>
-<dd><p>Mean of <code>confidence</code> within the group (NA‑removed).</p></dd>
+containing the following columns:</p><dl><dt>conf_median</dt>
+<dd><p>Median of <code>confidence</code> within the group (NA-removed).</p></dd>
 
-<dt>q1</dt>
+<dt>conf_q1</dt>
 <dd><p>First quartile (25th percentile) of <code>confidence</code>.</p></dd>
 
-<dt>q3</dt>
+<dt>conf_q3</dt>
 <dd><p>Third quartile (75th percentile) of <code>confidence</code>.</p></dd>
+
+<dt>conf_min</dt>
+<dd><p>Minimum value of <code>confidence</code> within the group (NA-removed).</p></dd>
+
+<dt>conf_max</dt>
+<dd><p>Maximum value of <code>confidence</code> within the group (NA-removed).</p></dd>
 
 
 </dl><p>The result can be passed directly to <code>ggplot2</code> or other visualization

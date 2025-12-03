@@ -11,13 +11,13 @@ Source:
 [`DESCRIPTION`](https://github.com/animovement/anicheck/blob/main/DESCRIPTION)
 
 Roald-Arbøl M (2025). *anicheck: An R package for diagnosing movement
-data quality*. R package version 0.1.0,
+data quality*. R package version 0.1.1,
 <http://animovement.dev/anicheck/>.
 
     @Manual{,
       title = {anicheck: An R package for diagnosing movement data quality},
       author = {Mikkel Roald-Arbøl},
       year = {2025},
-      note = {R package version 0.1.0},
+      note = {R package version 0.1.1},
       url = {http://animovement.dev/anicheck/},
     }

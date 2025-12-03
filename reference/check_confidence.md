@@ -35,17 +35,25 @@ check_confidence(data, by = NULL, ...)
 A tibble/data frame with one row per group defined by `by`, containing
 the following columns:
 
-- mean_confidence:
+- conf_median:
 
-  Mean of `confidence` within the group (NA‑removed).
+  Median of `confidence` within the group (NA-removed).
 
-- q1:
+- conf_q1:
 
   First quartile (25th percentile) of `confidence`.
 
-- q3:
+- conf_q3:
 
   Third quartile (75th percentile) of `confidence`.
+
+- conf_min:
+
+  Minimum value of `confidence` within the group (NA-removed).
+
+- conf_max:
+
+  Maximum value of `confidence` within the group (NA-removed).
 
 The result can be passed directly to `ggplot2` or other visualization
 packages.
