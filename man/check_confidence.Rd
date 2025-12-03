@@ -24,9 +24,11 @@ group the data before summarising. If \code{NULL}, the function defaults to
 A tibble/data frame with one row per group defined by \code{by},
 containing the following columns:
 \describe{
-\item{mean_confidence}{Mean of \code{confidence} within the group (NA‑removed).}
-\item{q1}{First quartile (25th percentile) of \code{confidence}.}
-\item{q3}{Third quartile (75th percentile) of \code{confidence}.}
+\item{conf_median}{Median of \code{confidence} within the group (NA-removed).}
+\item{conf_q1}{First quartile (25th percentile) of \code{confidence}.}
+\item{conf_q3}{Third quartile (75th percentile) of \code{confidence}.}
+\item{conf_min}{Minimum value of \code{confidence} within the group (NA-removed).}
+\item{conf_max}{Maximum value of \code{confidence} within the group (NA-removed).}
 }
 The result can be passed directly to \code{ggplot2} or other visualization
 packages.

@@ -1,7 +1,7 @@
 Package: anicheck
 Type: Package
 Title: An R package for diagnosing movement data quality
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(
       "Mikkel", 
@@ -16,12 +16,15 @@ URL: http://animovement.dev/anicheck/, https://github.com/animovement/anicheck/
 BugReports: https://github.com/animovement/anicheck/issues
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 4.1.0)
 Imports: 
     aniframe,
     cli,
     dplyr,
     rlang
 Suggests: 
+    anivis,
     knitr,
     testthat (>= 3.0.0)
 Additional_repositories: https://animovement.r-universe.dev

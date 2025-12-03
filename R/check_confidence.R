@@ -7,7 +7,7 @@
 #' @param data A data frame that contains at least the columns
 #'   `keypoint` and `confidence`. Additional grouping variables can be
 #'   supplied via the `by` argument.
-#' @param by   (Optional) A character vector or column name(s) used to
+#' @param by (Optional) A character vector or column name(s) used to
 #'   group the data before summarising. If `NULL`, the function defaults to
 #'   `"keypoint"`.
 #' @param ... Arguments passed down to the plotting functions.
@@ -15,9 +15,11 @@
 #' @return A tibble/data frame with one row per group defined by `by`,
 #'   containing the following columns:
 #'   \describe{
-#'     \item{mean_confidence}{Mean of `confidence` within the group (NA‑removed).}
-#'     \item{q1}{First quartile (25th percentile) of `confidence`.}
-#'     \item{q3}{Third quartile (75th percentile) of `confidence`.}
+#'     \item{conf_median}{Median of `confidence` within the group (NA-removed).}
+#'     \item{conf_q1}{First quartile (25th percentile) of `confidence`.}
+#'     \item{conf_q3}{Third quartile (75th percentile) of `confidence`.}
+#'     \item{conf_min}{Minimum value of `confidence` within the group (NA-removed).}
+#'     \item{conf_max}{Maximum value of `confidence` within the group (NA-removed).}
 #'   }
 #'   The result can be passed directly to `ggplot2` or other visualization
 #'   packages.
@@ -26,8 +28,6 @@
 check_confidence <- function(data, ...) {
   UseMethod("check_confidence")
 }
-
-# default ----------------------------
 
 #' @rdname check_confidence
 #' @export
@@ -47,8 +47,12 @@ check_confidence.default <- function(
     dplyr::ungroup() |>
     dplyr::summarise(
       conf_median = stats::median(.data$confidence, na.rm = TRUE),
-      conf_q1 = stats::quantile(.data$confidence, probs = 0.25),
-      conf_q3 = stats::quantile(.data$confidence, probs = 0.75),
+      conf_q1 = stats::quantile(.data$confidence, probs = 0.25, na.rm = TRUE)[[
+        1
+      ]],
+      conf_q3 = stats::quantile(.data$confidence, probs = 0.75, na.rm = TRUE)[[
+        1
+      ]],
       conf_min = min(.data$confidence, na.rm = TRUE),
       conf_max = max(.data$confidence, na.rm = TRUE),
       .by = by
@@ -63,40 +67,14 @@ check_confidence.default <- function(
   summarised_data
 }
 
-# methods ----------------------------------
-
 #' @export
 print.check_confidence <- function(x, ...) {
-  rlang::check_installed(
-    "anivis",
-    reason = "to use check_confidence()",
-    action = function(...) {
-      utils::install.packages(
-        'anivis',
-        repos = c(
-          'https://animovement.r-universe.dev',
-          'https://cloud.r-project.org'
-        )
-      )
-    }
-  )
+  check_anivis()
   NextMethod()
 }
 
 #' @export
 plot.check_confidence <- function(x, ...) {
-  rlang::check_installed(
-    "anivis",
-    reason = "to use check_confidence()",
-    action = function(...) {
-      utils::install.packages(
-        'anivis',
-        repos = c(
-          'https://animovement.r-universe.dev',
-          'https://cloud.r-project.org'
-        )
-      )
-    }
-  )
+  check_anivis()
   NextMethod()
 }
