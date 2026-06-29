@@ -11,12 +11,14 @@ missing values, temporal gaps, and spatial outliers.
 You can install the development version of *anicheck* with:
 
 ``` r
+
 install.packages('anicheck', repos = c('https://animovement.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 Once you have installed the package, you can load it with:
 
 ``` r
+
 library("anicheck")
 ```
 
@@ -35,5 +37,6 @@ bug, feel free to open an issue.
 To cite *anicheck* in publications use:
 
 ``` r
+
 citation("anicheck")
 ```
