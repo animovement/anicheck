@@ -22,3 +22,4 @@ gap. The print-side mirror of anivis's \code{as_plot_data()}.
 \seealso{
 \code{\link[=check_na_gapsize]{check_na_gapsize()}}
 }
+\keyword{internal}

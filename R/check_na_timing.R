@@ -202,6 +202,7 @@ empty_segments <- function(group_cols) {
 #' @return A data frame with one row per group.
 #'
 #' @seealso [check_na_timing()]
+#' @keywords internal
 #' @export
 summary.check_na_timing <- function(object, ...) {
   group_cols <- attr(object, "group_cols")

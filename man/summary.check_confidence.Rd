@@ -22,3 +22,4 @@ print-side mirror of anivis's \code{as_plot_data()}.
 \seealso{
 \code{\link[=check_confidence]{check_confidence()}}
 }
+\keyword{internal}

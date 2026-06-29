@@ -20,6 +20,7 @@
 #'
 #' @name plot.check
 #' @seealso [check_confidence()], [check_na_gapsize()], [check_na_timing()]
+#' @keywords internal
 NULL
 
 #' @rdname plot.check

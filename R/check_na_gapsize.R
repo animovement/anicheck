@@ -133,6 +133,7 @@ new_check_na_gapsize <- function(x, variable, group_cols, groups) {
 #' @return A data frame with one row per group.
 #'
 #' @seealso [check_na_gapsize()]
+#' @keywords internal
 #' @export
 summary.check_na_gapsize <- function(object, ...) {
   group_cols <- attr(object, "group_cols")

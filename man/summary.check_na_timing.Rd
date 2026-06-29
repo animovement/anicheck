@@ -24,3 +24,4 @@ the console or a report, rather than for a geom.
 \seealso{
 \code{\link[=check_na_timing]{check_na_timing()}}
 }
+\keyword{internal}

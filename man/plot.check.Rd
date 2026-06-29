@@ -31,3 +31,4 @@ arguments each plot accepts and what it draws.
 \seealso{
 \code{\link[=check_confidence]{check_confidence()}}, \code{\link[=check_na_gapsize]{check_na_gapsize()}}, \code{\link[=check_na_timing]{check_na_timing()}}
 }
+\keyword{internal}

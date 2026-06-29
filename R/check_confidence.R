@@ -119,6 +119,7 @@ new_check_confidence <- function(x, group_cols, groups) {
 #' @return A data frame with one row per keypoint (per identity).
 #'
 #' @seealso [check_confidence()]
+#' @keywords internal
 #' @export
 summary.check_confidence <- function(object, ...) {
   group_cols <- attr(object, "group_cols")
