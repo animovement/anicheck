@@ -30,6 +30,7 @@ Suggests:
     testthat (>= 3.0.0),
     withr
 Additional_repositories: https://animovement.r-universe.dev
+Config/Needs/website: animovement/animovementtemplate
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
