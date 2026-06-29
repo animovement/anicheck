@@ -1,7 +1,7 @@
 #' Check the Distribution of Missing-Value Gap Sizes
 #'
 #' Tabulates the *lengths* of the runs of consecutive missing values (`NA`) in an
-#' aniframe — how often a gap of each size occurs. A recording riddled with
+#' aniframe - how often a gap of each size occurs. A recording riddled with
 #' single-frame dropouts (easy to interpolate) has a very different gap-size
 #' profile from one with a few long blackouts (which interpolation cannot
 #' rescue), even when their total missing counts match; this check exposes that
@@ -125,7 +125,7 @@ new_check_na_gapsize <- function(x, variable, group_cols, groups) {
 #'
 #' Reduces a [check_na_gapsize()] object to a per-group overview: frame and
 #' missing counts, the percentage missing, the number of gaps, and the longest
-#' gap. The print-side mirror of [anivis::as_plot_data()].
+#' gap. The print-side mirror of anivis's `as_plot_data()`.
 #'
 #' @param object A `check_na_gapsize` object.
 #' @param ... Additional arguments (currently unused).

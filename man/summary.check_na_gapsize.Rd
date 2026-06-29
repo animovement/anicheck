@@ -17,7 +17,7 @@ A data frame with one row per group.
 \description{
 Reduces a \code{\link[=check_na_gapsize]{check_na_gapsize()}} object to a per-group overview: frame and
 missing counts, the percentage missing, the number of gaps, and the longest
-gap. The print-side mirror of \code{\link[anivis:as_plot_data]{anivis::as_plot_data()}}.
+gap. The print-side mirror of anivis's \code{as_plot_data()}.
 }
 \seealso{
 \code{\link[=check_na_gapsize]{check_na_gapsize()}}

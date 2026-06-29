@@ -2,13 +2,13 @@
 #'
 #' Summarises the per-frame tracking `confidence` (or likelihood) of each
 #' keypoint. A keypoint with a low median or a long low tail is one the tracker
-#' was often unsure about — exactly the points whose coordinates deserve
+#' was often unsure about - exactly the points whose coordinates deserve
 #' suspicion. This check reduces the confidence column to a per-keypoint
 #' distribution, and [plot.check_confidence()] draws it as a violin.
 #'
 #' The distribution is reduced to a compact kernel-density estimate (a fixed-size
 #' grid) per keypoint, plus a five-number summary, so the object stays small
-#' however long the recording — the violin is drawn straight from the stored
+#' however long the recording - the violin is drawn straight from the stored
 #' density.
 #'
 #' This is the data-generating half of the check. The plotting method
@@ -111,7 +111,7 @@ new_check_confidence <- function(x, group_cols, groups) {
 #'
 #' Trims a [check_confidence()] object to the headline statistics per keypoint:
 #' count, median, inter-quartile range, and minimum (the worst case). The
-#' print-side mirror of [anivis::as_plot_data()].
+#' print-side mirror of anivis's `as_plot_data()`.
 #'
 #' @param object A `check_confidence` object.
 #' @param ... Additional arguments (currently unused).

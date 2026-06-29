@@ -1,7 +1,7 @@
 #' Check the Timing of Missing Values
 #'
 #' Finds the runs of consecutive missing values (`NA`) in an aniframe and
-#' returns them as a compact table — **one row per gap**, not per frame. Where
+#' returns them as a compact table - **one row per gap**, not per frame. Where
 #' the gaps fall (at the start, the end, scattered, or in long bursts) is often
 #' more telling than how many there are; this check exposes that timing, and
 #' [plot.check_na_timing()] draws it as a missingness strip.
@@ -192,7 +192,8 @@ empty_segments <- function(group_cols) {
 #'
 #' Reduces a [check_na_timing()] object to a per-group overview table: frame and
 #' missing counts, the percentage missing, the number of gaps, and the longest
-#' gap. This is the print-side mirror of [anivis::as_plot_data()] — a compact table for
+#' gap. This is the print-side mirror of anivis's `as_plot_data()` - a compact
+#' table for
 #' the console or a report, rather than for a geom.
 #'
 #' @param object A `check_na_timing` object.
@@ -246,7 +247,7 @@ print.check_na_timing <- function(x, ...) {
 
   cli::cli_h3("Check: timing of missing values")
   cli::cli_text(
-    "Tracking {.field {variable}} across {total} frame{?s} —
+    "Tracking {.field {variable}} across {total} frame{?s} -
      {n_missing} missing ({pct}%) in {n_gaps} gap{?s}."
   )
 

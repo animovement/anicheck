@@ -17,7 +17,7 @@ A data frame with one row per keypoint (per identity).
 \description{
 Trims a \code{\link[=check_confidence]{check_confidence()}} object to the headline statistics per keypoint:
 count, median, inter-quartile range, and minimum (the worst case). The
-print-side mirror of \code{\link[anivis:as_plot_data]{anivis::as_plot_data()}}.
+print-side mirror of anivis's \code{as_plot_data()}.
 }
 \seealso{
 \code{\link[=check_confidence]{check_confidence()}}

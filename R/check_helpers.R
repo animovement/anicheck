@@ -24,7 +24,7 @@ group_key <- function(tbl, group_cols) {
   )
 }
 
-# Internal: the grouping columns of an aniframe — every `variables_what` and
+# Internal: the grouping columns of an aniframe - every `variables_what` and
 # non-time `variables_when` column. Derived straight from the metadata so the
 # check_* family has no dependency on anivis internals.
 aniframe_group_cols <- function(data) {

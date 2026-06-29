@@ -76,6 +76,10 @@ test_that("check_confidence summarises an all-missing-confidence keypoint as NA"
   none <- g[g$keypoint == "none", ]
   expect_equal(none$n, 0L)
   expect_true(is.na(none$median))
+  # Issue #9: an all-NA group must report NA, never Inf / -Inf.
+  expect_true(is.na(none$min))
+  expect_true(is.na(none$max))
+  expect_false(any(is.infinite(c(none$min, none$max))))
 })
 
 test_that("print.check_confidence labels an ungrouped check 'all'", {

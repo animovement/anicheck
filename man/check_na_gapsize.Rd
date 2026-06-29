@@ -31,7 +31,7 @@ totals and the checked variable(s) are stored as attributes. Use
 }
 \description{
 Tabulates the \emph{lengths} of the runs of consecutive missing values (\code{NA}) in an
-aniframe — how often a gap of each size occurs. A recording riddled with
+aniframe - how often a gap of each size occurs. A recording riddled with
 single-frame dropouts (easy to interpolate) has a very different gap-size
 profile from one with a few long blackouts (which interpolation cannot
 rescue), even when their total missing counts match; this check exposes that

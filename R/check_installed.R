@@ -6,7 +6,7 @@
 #'
 #' @return Called for its side effect; returns invisibly.
 #' @keywords internal
-# nocov start — install prompt; exercised interactively, not in the test suite.
+# nocov start - install prompt; exercised interactively, not in the test suite.
 check_anivis <- function() {
   rlang::check_installed(
     "anivis",

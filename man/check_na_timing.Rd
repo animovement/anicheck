@@ -32,7 +32,7 @@ methods. Use \code{\link[=summary]{summary()}} for a per-group overview.
 }
 \description{
 Finds the runs of consecutive missing values (\code{NA}) in an aniframe and
-returns them as a compact table — \strong{one row per gap}, not per frame. Where
+returns them as a compact table - \strong{one row per gap}, not per frame. Where
 the gaps fall (at the start, the end, scattered, or in long bursts) is often
 more telling than how many there are; this check exposes that timing, and
 \code{\link[=plot.check_na_timing]{plot.check_na_timing()}} draws it as a missingness strip.

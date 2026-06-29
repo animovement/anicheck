@@ -17,7 +17,8 @@ A data frame with one row per group.
 \description{
 Reduces a \code{\link[=check_na_timing]{check_na_timing()}} object to a per-group overview table: frame and
 missing counts, the percentage missing, the number of gaps, and the longest
-gap. This is the print-side mirror of \code{\link[anivis:as_plot_data]{anivis::as_plot_data()}} — a compact table for
+gap. This is the print-side mirror of anivis's \code{as_plot_data()} - a compact
+table for
 the console or a report, rather than for a geom.
 }
 \seealso{
