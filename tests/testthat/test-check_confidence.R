@@ -1,185 +1,99 @@
-# Tests for check_confidence()
-#
-# check_confidence.default:
-# - Errors when data is not an aniframe
-# - Uses "keypoint" as default grouping variable
-# - Respects custom `by` argument
-# - Works with multiple grouping variables
-# - Returns correct class
-# - Returns correct column names
-# - Calculates summary statistics correctly
-# - Handles NA values in confidence
-#
-# print.check_confidence:
-# - Calls check_anivis()
-#
-# plot.check_confidence:
-# - Calls check_anivis()
+# Tests for check_confidence(), its summary/print, and its plot method.
 
-# check_confidence.default ------------------------------------------------
+make_conf <- function() {
+  af <- aniframe::as_aniframe(data.frame(
+    keypoint = rep(c("head", "tail"), each = 4),
+    time = rep(1:4, 2),
+    x = rnorm(8),
+    y = rnorm(8)
+  ))
+  af$confidence <- c(0.9, 0.8, 1.0, 0.7, 0.2, 0.4, 0.1, 0.3)
+  af
+}
 
-test_that("check_confidence errors when data is not an aniframe", {
-  df <- data.frame(
-    time = 1,
-    x = 1,
-    y = 1,
-    keypoint = "a",
-    confidence = 0.5
+test_that("check_confidence stores a per-keypoint density grid", {
+  out <- check_confidence(make_conf(), n = 64)
+  expect_s3_class(out, "check_confidence")
+  expect_true(all(c("value", "density") %in% names(out)))
+  expect_equal(attr(out, "group_cols"), "keypoint")
+  expect_equal(nrow(out), 128L) # 64 grid points x 2 keypoints
+  expect_setequal(unique(as.character(out$keypoint)), c("head", "tail"))
+})
+
+test_that("check_confidence keeps a per-keypoint summary for the overlay", {
+  g <- attr(check_confidence(make_conf()), "groups")
+  head_row <- g[g$keypoint == "head", ]
+  expect_equal(head_row$n, 4L)
+  expect_equal(head_row$median, 0.85)
+})
+
+test_that("check_confidence errors without a confidence column or aniframe", {
+  af <- aniframe::as_aniframe(data.frame(
+    keypoint = rep("head", 3),
+    time = 1:3,
+    x = 1:3,
+    y = 1:3
+  ))
+  expect_error(check_confidence(af), "confidence")
+  expect_error(check_confidence(data.frame(confidence = 0.5)), "aniframe")
+})
+
+test_that("summary.check_confidence reports median, iqr and worst case", {
+  s <- summary(check_confidence(make_conf()))
+  expect_setequal(names(s), c("keypoint", "n", "median", "iqr", "min"))
+  tail_row <- s[s$keypoint == "tail", ]
+  expect_equal(tail_row$min, 0.1)
+})
+
+test_that("print.check_confidence returns the object invisibly", {
+  expect_invisible(print(check_confidence(make_conf())))
+})
+
+test_that("check_confidence collapses a constant-confidence keypoint to a spike", {
+  af <- aniframe::as_aniframe(data.frame(
+    keypoint = rep(c("flat", "vary"), each = 4),
+    time = rep(1:4, 2),
+    x = rnorm(8),
+    y = rnorm(8)
+  ))
+  af$confidence <- c(rep(0.5, 4), c(0.2, 0.4, 0.6, 0.8))
+  out <- check_confidence(af, n = 16)
+  flat <- out[as.character(out$keypoint) == "flat", ]
+  # No spread -> a one-point spike rather than a density grid.
+  expect_equal(flat$value, c(0.5, 0.5))
+  expect_equal(flat$density, c(0, 1))
+})
+
+test_that("check_confidence summarises an all-missing-confidence keypoint as NA", {
+  af <- aniframe::as_aniframe(data.frame(
+    keypoint = rep(c("none", "ok"), each = 4),
+    time = rep(1:4, 2),
+    x = rnorm(8),
+    y = rnorm(8)
+  ))
+  af$confidence <- c(rep(NA_real_, 4), c(0.2, 0.4, 0.6, 0.8))
+  g <- attr(check_confidence(af), "groups")
+  none <- g[g$keypoint == "none", ]
+  expect_equal(none$n, 0L)
+  expect_true(is.na(none$median))
+})
+
+test_that("print.check_confidence labels an ungrouped check 'all'", {
+  # A valid aniframe always has at least one identity column, but the print
+  # method defends against an empty grouping by labelling the lone row "all".
+  obj <- new_check_confidence(
+    data.frame(value = c(0, 1), density = c(0, 1)),
+    group_cols = character(0),
+    groups = data.frame(
+      n = 2L,
+      mean = 0.5,
+      sd = 0.1,
+      min = 0,
+      q25 = 0.25,
+      median = 0.5,
+      q75 = 0.75,
+      max = 1
+    )
   )
-
-  expect_error(
-    check_confidence(df),
-    "not an aniframe"
-  )
-})
-
-test_that("check_confidence returns correct class", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:4,
-    x = 1:4,
-    y = 1:4,
-    keypoint = c("a", "a", "b", "b"),
-    confidence = c(0.8, 0.9, 0.7, 0.6)
-  ))
-
-  result <- check_confidence(af)
-
-  expect_s3_class(result, "check_confidence")
-  expect_s3_class(result, "plot_check_confidence")
-  expect_s3_class(result, "data.frame")
-})
-
-test_that("check_confidence returns correct columns", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:4,
-    x = 1:4,
-    y = 1:4,
-    keypoint = c("a", "a", "b", "b"),
-    confidence = c(0.8, 0.9, 0.7, 0.6)
-  ))
-
-  result <- check_confidence(af)
-
-  expect_named(
-    result,
-    c("keypoint", "conf_median", "conf_q1", "conf_q3", "conf_min", "conf_max")
-  )
-})
-
-test_that("check_confidence uses 'keypoint' as default grouping", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:4,
-    x = 1:4,
-    y = 1:4,
-    keypoint = c("a", "a", "b", "b"),
-    confidence = c(0.8, 0.9, 0.7, 0.6)
-  ))
-
-  result <- check_confidence(af)
-
-  expect_equal(nrow(result), 2)
-  expect_true("keypoint" %in% names(result))
-  expect_setequal(result$keypoint, c("a", "b"))
-})
-
-test_that("check_confidence respects custom `by` argument", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:4,
-    x = 1:4,
-    y = 1:4,
-    keypoint = c("a", "a", "b", "b"),
-    group = c("x", "y", "x", "y"),
-    confidence = c(0.8, 0.9, 0.7, 0.6)
-  ))
-
-  result <- check_confidence(af, by = "group")
-
-  expect_equal(nrow(result), 2)
-  expect_true("group" %in% names(result))
-  expect_false("keypoint" %in% names(result))
-  expect_setequal(result$group, c("x", "y"))
-})
-
-test_that("check_confidence works with multiple grouping variables", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:8,
-    x = 1:8,
-    y = 1:8,
-    keypoint = rep(c("a", "b"), 4),
-    individual = rep(c("i1", "i2"), each = 4),
-    confidence = c(0.8, 0.7, 0.9, 0.6, 0.5, 0.4, 0.6, 0.3)
-  ))
-
-  result <- check_confidence(af, by = c("keypoint", "individual"))
-
-  expect_equal(nrow(result), 4)
-  expect_true(all(c("keypoint", "individual") %in% names(result)))
-})
-
-test_that("check_confidence calculates statistics correctly", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:5,
-    x = 1:5,
-    y = 1:5,
-    keypoint = rep("a", 5),
-    confidence = c(0.1, 0.3, 0.5, 0.7, 0.9)
-  ))
-
-  result <- check_confidence(af)
-
-  expect_equal(result$conf_median, 0.5)
-  expect_equal(result$conf_min, 0.1)
-  expect_equal(result$conf_max, 0.9)
-  expect_equal(result$conf_q1, 0.3, tolerance = 0.05)
-  expect_equal(result$conf_q3, 0.7, tolerance = 0.05)
-})
-
-test_that("check_confidence handles NA values in confidence", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:5,
-    x = 1:5,
-    y = 1:5,
-    keypoint = rep("a", 5),
-    confidence = c(0.2, NA, 0.5, NA, 0.8)
-  ))
-
-  result <- check_confidence(af)
-
-  expect_equal(result$conf_median, 0.5)
-  expect_equal(result$conf_min, 0.2)
-  expect_equal(result$conf_max, 0.8)
-})
-
-# print.check_confidence --------------------------------------------------
-
-test_that("print.check_confidence calls check_anivis", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:2,
-    x = 1:2,
-    y = 1:2,
-    keypoint = c("a", "b"),
-    confidence = c(0.8, 0.9)
-  ))
-  result <- check_confidence(af)
-
-  local_mocked_bindings(check_anivis = function() invisible(NULL))
-
-  expect_output(print(result))
-})
-
-# plot.check_confidence ---------------------------------------------------
-
-test_that("plot.check_confidence calls check_anivis", {
-  af <- aniframe::as_aniframe(data.frame(
-    time = 1:2,
-    x = 1:2,
-    y = 1:2,
-    keypoint = c("a", "b"),
-    confidence = c(0.8, 0.9)
-  ))
-  result <- check_confidence(af)
-
-  local_mocked_bindings(check_anivis = function() invisible(NULL))
-
-  expect_no_error(plot(result))
+  expect_invisible(print(obj))
 })

@@ -25,4 +25,4 @@ reference:
 - title: "Diagnostics"
   desc: These functions allows you to check the state of your data.
   contents:
-  - check_confidence
+  - starts_with("check_")

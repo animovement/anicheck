@@ -1,28 +1,43 @@
-#' Visualize the Distribution of Confidence Values per Keypoint
+#' Check the Distribution of Tracking Confidence
 #'
-#' `check_confidence()` computes summary statistics for confidence values
-#' grouped by a chosen variable (defaulting to `keypoint`) and returns a
-#' tidy data frame that can be visualized with standard plotting functions.
+#' Summarises the per-frame tracking `confidence` (or likelihood) of each
+#' keypoint. A keypoint with a low median or a long low tail is one the tracker
+#' was often unsure about — exactly the points whose coordinates deserve
+#' suspicion. This check reduces the confidence column to a per-keypoint
+#' distribution, and [plot.check_confidence()] draws it as a violin.
 #'
-#' @param data A data frame that contains at least the columns
-#'   `keypoint` and `confidence`. Additional grouping variables can be
-#'   supplied via the `by` argument.
-#' @param by (Optional) A character vector or column name(s) used to
-#'   group the data before summarising. If `NULL`, the function defaults to
-#'   `"keypoint"`.
-#' @param ... Arguments passed down to the plotting functions.
+#' The distribution is reduced to a compact kernel-density estimate (a fixed-size
+#' grid) per keypoint, plus a five-number summary, so the object stays small
+#' however long the recording — the violin is drawn straight from the stored
+#' density.
 #'
-#' @return A tibble/data frame with one row per group defined by `by`,
-#'   containing the following columns:
-#'   \describe{
-#'     \item{conf_median}{Median of `confidence` within the group (NA-removed).}
-#'     \item{conf_q1}{First quartile (25th percentile) of `confidence`.}
-#'     \item{conf_q3}{Third quartile (75th percentile) of `confidence`.}
-#'     \item{conf_min}{Minimum value of `confidence` within the group (NA-removed).}
-#'     \item{conf_max}{Maximum value of `confidence` within the group (NA-removed).}
-#'   }
-#'   The result can be passed directly to `ggplot2` or other visualization
-#'   packages.
+#' This is the data-generating half of the check. The plotting method
+#' ([plot.check_confidence()]) lives in \pkg{anivis}, mirroring the
+#' \pkg{performance} / \pkg{see} split in easystats. (`check_*()` functions are
+#' destined for the \pkg{anicheck} package; they are kept here for now for
+#' convenience.)
+#'
+#' @param data An aniframe object with a `confidence` column.
+#' @param n Density grid resolution per keypoint. Default `256`.
+#' @param ... Additional arguments (currently unused).
+#'
+#' @return A data frame of class `check_confidence` with one row per
+#'   (keypoint, density grid point): the identity columns, the confidence
+#'   `value`, and its kernel `density`. A per-keypoint five-number summary (with
+#'   `n`, `mean`, `sd`) and the grouping columns are stored as attributes. Use
+#'   [summary()] for a trimmed overview.
+#'
+#' @seealso [plot.check_confidence()]
+#'
+#' @examples
+#' af <- aniframe::as_aniframe(data.frame(
+#'   keypoint = rep(c("head", "tail"), each = 50),
+#'   time = rep(1:50, 2),
+#'   x = rnorm(100),
+#'   y = rnorm(100)
+#' ))
+#' af$confidence <- c(rbeta(50, 8, 2), rbeta(50, 2, 5))
+#' check_confidence(af)
 #'
 #' @export
 check_confidence <- function(data, ...) {
@@ -31,50 +46,106 @@ check_confidence <- function(data, ...) {
 
 #' @rdname check_confidence
 #' @export
-check_confidence.default <- function(
-  data,
-  by = NULL,
-  ...
-) {
-  if (!aniframe::is_aniframe(data)) {
-    cli::cli_abort("Data is not an aniframe.")
-  }
+check_confidence.default <- function(data, ...) {
+  cli::cli_abort("{.arg data} must be an aniframe.")
+}
 
-  if (is.null(by)) {
-    by <- "keypoint"
+#' @rdname check_confidence
+#' @export
+check_confidence.aniframe <- function(data, n = 256, ...) {
+  if (!("confidence" %in% names(data))) {
+    cli::cli_abort(
+      "{.fun check_confidence} needs a {.field confidence} column."
+    )
   }
-  summarised_data <- data |>
-    dplyr::ungroup() |>
-    dplyr::summarise(
-      conf_median = stats::median(.data$confidence, na.rm = TRUE),
-      conf_q1 = stats::quantile(.data$confidence, probs = 0.25, na.rm = TRUE)[[
-        1
-      ]],
-      conf_q3 = stats::quantile(.data$confidence, probs = 0.75, na.rm = TRUE)[[
-        1
-      ]],
-      conf_min = min(.data$confidence, na.rm = TRUE),
-      conf_max = max(.data$confidence, na.rm = TRUE),
-      .by = by
-    ) |>
-    suppressWarnings()
+  group_cols <- aniframe_group_cols(data)
 
-  class(summarised_data) <- c(
+  df <- as.data.frame(data)
+  parts <- split_by_group_cols(df, group_cols)
+  grid <- do.call(
+    rbind,
+    lapply(parts, confidence_density, group_cols = group_cols, n = n)
+  )
+  rownames(grid) <- NULL
+
+  new_check_confidence(
+    grid,
+    group_cols = group_cols,
+    groups = distribution_summary(df, group_cols, "confidence")
+  )
+}
+
+# Internal: kernel-density grid of one keypoint's confidence values, clipped to
+# the observed range. Degenerate groups (fewer than two distinct values) collapse
+# to a one-point spike so the violin still draws.
+confidence_density <- function(d, group_cols, n) {
+  v <- d$confidence[!is.na(d$confidence)]
+  if (length(v) >= 2L && diff(range(v)) > 0) {
+    dens <- stats::density(v, from = min(v), to = max(v), n = n)
+    out <- data.frame(value = dens$x, density = dens$y)
+  } else {
+    val <- if (length(v)) v[1] else NA_real_
+    out <- data.frame(value = c(val, val), density = c(0, 1))
+  }
+  for (col in group_cols) {
+    out[[col]] <- d[[col]][1]
+  }
+  out[c(group_cols, "value", "density")]
+}
+
+# Internal: low-level constructor.
+new_check_confidence <- function(x, group_cols, groups) {
+  class(x) <- c(
     "check_confidence",
-    "plot_check_confidence",
+    "anivis_check_confidence",
+    "tbl_df",
+    "tbl",
     "data.frame"
   )
-  summarised_data
+  attr(x, "group_cols") <- group_cols
+  attr(x, "groups") <- groups
+  x
+}
+
+#' Summarise a Confidence Check
+#'
+#' Trims a [check_confidence()] object to the headline statistics per keypoint:
+#' count, median, inter-quartile range, and minimum (the worst case). The
+#' print-side mirror of [anivis::as_plot_data()].
+#'
+#' @param object A `check_confidence` object.
+#' @param ... Additional arguments (currently unused).
+#'
+#' @return A data frame with one row per keypoint (per identity).
+#'
+#' @seealso [check_confidence()]
+#' @export
+summary.check_confidence <- function(object, ...) {
+  group_cols <- attr(object, "group_cols")
+  groups <- attr(object, "groups")
+  out <- groups[c(group_cols, "n", "median", "q25", "q75", "min")]
+  out$iqr <- out$q75 - out$q25
+  rownames(out) <- NULL
+  out[c(group_cols, "n", "median", "iqr", "min")]
 }
 
 #' @export
 print.check_confidence <- function(x, ...) {
-  check_anivis()
-  NextMethod()
-}
+  group_cols <- attr(x, "group_cols")
+  s <- summary(x)
 
-#' @export
-plot.check_confidence <- function(x, ...) {
-  check_anivis()
-  NextMethod()
+  cli::cli_h3("Check: tracking confidence")
+  cli::cli_text(
+    "Confidence for {nrow(s)} keypoint{?s} (median [min]):"
+  )
+  labels <- if (length(group_cols)) {
+    do.call(
+      paste,
+      c(lapply(group_cols, function(col) as.character(s[[col]])), sep = " | ")
+    )
+  } else {
+    "all"
+  }
+  cli::cli_ul(sprintf("%s: %.2f [%.2f]", labels, s$median, s$min))
+  invisible(x)
 }
