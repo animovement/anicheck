@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/animovement/anicheck/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/animovement/anicheck/blob/v0.2.0/DESCRIPTION)
 
 Roald-Arbøl M (2026). *anicheck: An R package for diagnosing movement
 data quality*. R package version 0.2.0,
