@@ -5,7 +5,7 @@ keypoint. A keypoint with a low median or a long low tail is one the
 tracker was often unsure about - exactly the points whose coordinates
 deserve suspicion. This check reduces the confidence column to a
 per-keypoint distribution, and
-[`plot.check_confidence()`](http://animovement.dev/anicheck/reference/plot.check.md)
+[`plot.check_confidence()`](https://animovement.dev/anicheck/reference/plot.check.md)
 draws it as a violin.
 
 ## Usage
@@ -51,14 +51,14 @@ stays small however long the recording - the violin is drawn straight
 from the stored density.
 
 This is the data-generating half of the check. The plotting method
-([`plot.check_confidence()`](http://animovement.dev/anicheck/reference/plot.check.md))
+([`plot.check_confidence()`](https://animovement.dev/anicheck/reference/plot.check.md))
 lives in anivis, mirroring the performance / see split in easystats.
 (`check_*()` functions are destined for the anicheck package; they are
 kept here for now for convenience.)
 
 ## See also
 
-[`plot.check_confidence()`](http://animovement.dev/anicheck/reference/plot.check.md)
+[`plot.check_confidence()`](https://animovement.dev/anicheck/reference/plot.check.md)
 
 ## Examples
 

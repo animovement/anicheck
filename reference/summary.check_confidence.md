@@ -1,7 +1,7 @@
 # Summarise a Confidence Check
 
 Trims a
-[`check_confidence()`](http://animovement.dev/anicheck/reference/check_confidence.md)
+[`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md)
 object to the headline statistics per keypoint: count, median,
 inter-quartile range, and minimum (the worst case). The print-side
 mirror of anivis's `as_plot_data()`.
@@ -29,4 +29,4 @@ A data frame with one row per keypoint (per identity).
 
 ## See also
 
-[`check_confidence()`](http://animovement.dev/anicheck/reference/check_confidence.md)
+[`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md)

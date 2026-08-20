@@ -23,10 +23,10 @@ plot(x, ...)
 - x:
 
   A check object from
-  [`check_confidence()`](http://animovement.dev/anicheck/reference/check_confidence.md),
-  [`check_na_gapsize()`](http://animovement.dev/anicheck/reference/check_na_gapsize.md),
+  [`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md),
+  [`check_na_gapsize()`](https://animovement.dev/anicheck/reference/check_na_gapsize.md),
   or
-  [`check_na_timing()`](http://animovement.dev/anicheck/reference/check_na_timing.md).
+  [`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md).
 
 - ...:
 
@@ -38,6 +38,6 @@ A ggplot2 object, drawn by anivis.
 
 ## See also
 
-[`check_confidence()`](http://animovement.dev/anicheck/reference/check_confidence.md),
-[`check_na_gapsize()`](http://animovement.dev/anicheck/reference/check_na_gapsize.md),
-[`check_na_timing()`](http://animovement.dev/anicheck/reference/check_na_timing.md)
+[`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md),
+[`check_na_gapsize()`](https://animovement.dev/anicheck/reference/check_na_gapsize.md),
+[`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md)

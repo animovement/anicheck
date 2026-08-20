@@ -8,16 +8,31 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/animovement/anicheck/blob/main/DESCRIPTION)
+[`inst/CITATION`](https://github.com/animovement/anicheck/blob/main/inst/CITATION)
 
-Roald-Arbøl M (2026). *anicheck: An R package for diagnosing movement
-data quality*. R package version 0.2.0,
-<http://animovement.dev/anicheck/>.
+Roald-Arbøl M (2026). “animovement: An R toolbox for analysing movement
+across space and time.”
+[doi:10.5281/zenodo.13235277](https://doi.org/10.5281/zenodo.13235277).
+<https://animovement.dev/animovement/>.
 
-    @Manual{,
+    @Misc{animovement,
+      title = {animovement: An R toolbox for analysing movement across space and time},
+      author = {Mikkel Roald-Arbøl},
+      year = {2026},
+      doi = {10.5281/zenodo.13235277},
+      url = {https://animovement.dev/animovement/},
+    }
+
+Roald-Arbøl M (2026). “anicheck: An R package for diagnosing movement
+data quality.”
+[doi:10.5281/zenodo.21033042](https://doi.org/10.5281/zenodo.21033042).
+<https://animovement.dev/anicheck/>.
+
+    @Misc{anicheck,
       title = {anicheck: An R package for diagnosing movement data quality},
       author = {Mikkel Roald-Arbøl},
       year = {2026},
-      note = {R package version 0.2.0},
-      url = {http://animovement.dev/anicheck/},
+      doi = {10.5281/zenodo.21033042},
+      version = {0.2.0},
+      url = {https://animovement.dev/anicheck/},
     }

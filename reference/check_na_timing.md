@@ -5,7 +5,7 @@ returns them as a compact table - **one row per gap**, not per frame.
 Where the gaps fall (at the start, the end, scattered, or in long
 bursts) is often more telling than how many there are; this check
 exposes that timing, and
-[`plot.check_na_timing()`](http://animovement.dev/anicheck/reference/plot.check.md)
+[`plot.check_na_timing()`](https://animovement.dev/anicheck/reference/plot.check.md)
 draws it as a missingness strip.
 
 ## Usage
@@ -55,7 +55,7 @@ built from it) tiny even for million-frame recordings: its size scales
 with the number of gaps, not the length of the data.
 
 This is the data-generating half of the check. The plotting method
-([`plot.check_na_timing()`](http://animovement.dev/anicheck/reference/plot.check.md))
+([`plot.check_na_timing()`](https://animovement.dev/anicheck/reference/plot.check.md))
 lives in anivis, mirroring the performance / see split in easystats:
 `check_*()` computes a classed object with
 [`summary()`](https://rdrr.io/r/base/summary.html) /
@@ -66,8 +66,8 @@ convenience.)
 
 ## See also
 
-[`plot.check_na_timing()`](http://animovement.dev/anicheck/reference/plot.check.md),
-[`summary.check_na_timing()`](http://animovement.dev/anicheck/reference/summary.check_na_timing.md)
+[`plot.check_na_timing()`](https://animovement.dev/anicheck/reference/plot.check.md),
+[`summary.check_na_timing()`](https://animovement.dev/anicheck/reference/summary.check_na_timing.md)
 
 ## Examples
 

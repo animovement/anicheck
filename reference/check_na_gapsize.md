@@ -6,7 +6,7 @@ riddled with single-frame dropouts (easy to interpolate) has a very
 different gap-size profile from one with a few long blackouts (which
 interpolation cannot rescue), even when their total missing counts
 match; this check exposes that profile, and
-[`plot.check_na_gapsize()`](http://animovement.dev/anicheck/reference/plot.check.md)
+[`plot.check_na_gapsize()`](https://animovement.dev/anicheck/reference/plot.check.md)
 draws it as a bar chart.
 
 ## Usage
@@ -49,14 +49,14 @@ overview.
 ## Details
 
 This is the data-generating half of the check. The plotting method
-([`plot.check_na_gapsize()`](http://animovement.dev/anicheck/reference/plot.check.md))
+([`plot.check_na_gapsize()`](https://animovement.dev/anicheck/reference/plot.check.md))
 lives in anivis, mirroring the performance / see split in easystats.
 (`check_*()` functions are destined for the anicheck package; they are
 kept here for now for convenience.)
 
 ## See also
 
-[`plot.check_na_gapsize()`](http://animovement.dev/anicheck/reference/plot.check.md)
+[`plot.check_na_gapsize()`](https://animovement.dev/anicheck/reference/plot.check.md)
 
 ## Examples
 
