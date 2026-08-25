@@ -101,3 +101,29 @@ test_that("print.check_confidence labels an ungrouped check 'all'", {
   )
   expect_invisible(print(obj))
 })
+
+test_that("check objects record which grouping columns are identity", {
+  # `group_cols` concatenates identity and temporal context, so a consumer
+  # given only that cannot tell where one ends and the other begins —
+  # "the last grouping column" can land on a session rather than the
+  # finest identity. anivis needs the distinction for its plot axis
+  # (animovement/anivis#21).
+  set.seed(1)
+  n <- 48
+  d <- data.frame(
+    time = rep(seq_len(n / 4), 4),
+    animal = rep(c("A", "A", "B", "B"), each = n / 4),
+    bodypart = rep(c("p", "q", "p", "q"), each = n / 4),
+    session = rep(c("s1", "s2"), each = n / 2),
+    x = rnorm(n),
+    y = rnorm(n),
+    confidence = runif(n)
+  )
+  af <- aniframe::as_aniframe(d, variables_what = c("animal", "bodypart"))
+
+  chk <- check_confidence(af)
+
+  expect_equal(attr(chk, "group_cols"), c("animal", "bodypart", "session"))
+  # Identity only, in variables_what order — coarse to fine.
+  expect_equal(attr(chk, "identity_cols"), c("animal", "bodypart"))
+})

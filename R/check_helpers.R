@@ -34,6 +34,18 @@ aniframe_group_cols <- function(data) {
   unique(c(what, when))
 }
 
+# Internal: the identity subset of `aniframe_group_cols()`, in the order
+# `variables_what` declares them — coarse to fine. A consumer given only
+# `group_cols` cannot recover this: identity and temporal context are
+# concatenated, so there is no way to tell where one ends and the other
+# begins, and picking "the last grouping column" can land on a session or
+# trial. anivis needs the distinction to put the finest identity on the
+# axis of a confidence plot (animovement/anivis#21).
+aniframe_identity_cols <- function(data) {
+  meta <- aniframe::get_metadata(data)
+  intersect(meta$variables_what, names(data))
+}
+
 # Internal: validate the requested variable(s). Missingness is meaningful for
 # any column, so (unlike a numeric measure) there is no type requirement.
 check_na_variable <- function(data, variable) {

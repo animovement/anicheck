@@ -71,7 +71,8 @@ check_na_gapsize.aniframe <- function(data, variable = "x", ...) {
     out,
     variable = variable,
     group_cols = group_cols,
-    groups = group_totals(df, group_cols)
+    groups = group_totals(df, group_cols),
+    identity_cols = aniframe_identity_cols(data)
   )
 }
 
@@ -107,7 +108,13 @@ empty_gapsize <- function(group_cols) {
 # Internal: low-level constructor. Tags the data frame with the check class and
 # stashes the per-group totals and checked variable(s) as attributes for the
 # summary / print / plot methods.
-new_check_na_gapsize <- function(x, variable, group_cols, groups) {
+new_check_na_gapsize <- function(
+  x,
+  variable,
+  group_cols,
+  groups,
+  identity_cols = character()
+) {
   class(x) <- c(
     "check_na_gapsize",
     "anivis_check_na_gapsize",
@@ -117,6 +124,7 @@ new_check_na_gapsize <- function(x, variable, group_cols, groups) {
   )
   attr(x, "variable") <- variable
   attr(x, "group_cols") <- group_cols
+  attr(x, "identity_cols") <- identity_cols
   attr(x, "groups") <- groups
   x
 }

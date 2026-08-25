@@ -71,7 +71,8 @@ check_confidence.aniframe <- function(data, n = 256, ...) {
   new_check_confidence(
     grid,
     group_cols = group_cols,
-    groups = distribution_summary(df, group_cols, "confidence")
+    groups = distribution_summary(df, group_cols, "confidence"),
+    identity_cols = aniframe_identity_cols(data)
   )
 }
 
@@ -94,7 +95,12 @@ confidence_density <- function(d, group_cols, n) {
 }
 
 # Internal: low-level constructor.
-new_check_confidence <- function(x, group_cols, groups) {
+new_check_confidence <- function(
+  x,
+  group_cols,
+  groups,
+  identity_cols = character()
+) {
   class(x) <- c(
     "check_confidence",
     "anivis_check_confidence",
@@ -103,6 +109,7 @@ new_check_confidence <- function(x, group_cols, groups) {
     "data.frame"
   )
   attr(x, "group_cols") <- group_cols
+  attr(x, "identity_cols") <- identity_cols
   attr(x, "groups") <- groups
   x
 }

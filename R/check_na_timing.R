@@ -88,6 +88,7 @@ check_na_timing.aniframe <- function(data, variable = "x", ...) {
       NA_character_
     },
     group_cols = group_cols,
+    identity_cols = aniframe_identity_cols(data),
     groups = groups,
     time_step = na_timing_step(parts),
     time_range = c(min(df$time), max(df$time))
@@ -106,7 +107,8 @@ new_check_na_timing <- function(
   group_cols,
   groups,
   time_step,
-  time_range
+  time_range,
+  identity_cols = character()
 ) {
   class(x) <- c(
     "check_na_timing",
@@ -118,6 +120,7 @@ new_check_na_timing <- function(
   attr(x, "variable") <- variable
   attr(x, "unit_time") <- unit_time
   attr(x, "group_cols") <- group_cols
+  attr(x, "identity_cols") <- identity_cols
   attr(x, "groups") <- groups
   attr(x, "time_step") <- time_step
   attr(x, "time_range") <- time_range
