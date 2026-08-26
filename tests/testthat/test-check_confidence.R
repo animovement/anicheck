@@ -102,12 +102,12 @@ test_that("print.check_confidence labels an ungrouped check 'all'", {
   expect_invisible(print(obj))
 })
 
-test_that("check objects record which grouping columns are identity", {
+test_that("check objects carry the declarations group_cols is built from", {
   # `group_cols` concatenates identity and temporal context, so a consumer
   # given only that cannot tell where one ends and the other begins —
   # "the last grouping column" can land on a session rather than the
   # finest identity. anivis needs the distinction for its plot axis
-  # (animovement/anivis#21).
+  # (animovement/anivis#21). The fields travel under their own names.
   set.seed(1)
   n <- 48
   d <- data.frame(
@@ -124,6 +124,8 @@ test_that("check objects record which grouping columns are identity", {
   chk <- check_confidence(af)
 
   expect_equal(attr(chk, "group_cols"), c("animal", "bodypart", "session"))
-  # Identity only, in variables_what order — coarse to fine.
-  expect_equal(attr(chk, "identity_cols"), c("animal", "bodypart"))
+  # The aniframe metadata fields verbatim, under their own names.
+  expect_equal(attr(chk, "variables_what"), aniframe::get_variables_what(af))
+  expect_equal(attr(chk, "variables_what"), c("animal", "bodypart"))
+  expect_equal(attr(chk, "variables_when"), aniframe::get_variables_when(af))
 })

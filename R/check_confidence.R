@@ -59,6 +59,7 @@ check_confidence.aniframe <- function(data, n = 256, ...) {
     )
   }
   group_cols <- aniframe_group_cols(data)
+  decl <- aniframe_declarations(data)
 
   df <- as.data.frame(data)
   parts <- split_by_group_cols(df, group_cols)
@@ -72,7 +73,8 @@ check_confidence.aniframe <- function(data, n = 256, ...) {
     grid,
     group_cols = group_cols,
     groups = distribution_summary(df, group_cols, "confidence"),
-    identity_cols = aniframe_identity_cols(data)
+    variables_what = decl$variables_what,
+    variables_when = decl$variables_when
   )
 }
 
@@ -99,7 +101,8 @@ new_check_confidence <- function(
   x,
   group_cols,
   groups,
-  identity_cols = character()
+  variables_what = character(),
+  variables_when = character()
 ) {
   class(x) <- c(
     "check_confidence",
@@ -109,7 +112,8 @@ new_check_confidence <- function(
     "data.frame"
   )
   attr(x, "group_cols") <- group_cols
-  attr(x, "identity_cols") <- identity_cols
+  attr(x, "variables_what") <- variables_what
+  attr(x, "variables_when") <- variables_when
   attr(x, "groups") <- groups
   x
 }
