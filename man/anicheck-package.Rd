@@ -6,6 +6,8 @@
 \alias{anicheck-package}
 \title{anicheck: An R package for diagnosing movement data quality}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 An R package for diagnosing movement data quality.
 }
 \seealso{
