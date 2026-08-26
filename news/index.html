@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">anicheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,13 @@
       <small>Source: <a href="https://github.com/animovement/anicheck/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="anicheck-development-version">anicheck (development version)<a class="anchor" aria-label="anchor" href="#anicheck-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>Check objects now carry the aniframe declarations they were built from, as <code>variables_what</code> and <code>variables_when</code> attributes (animovement/anivis#21). <code>group_cols</code> concatenates identity and temporal context, so a consumer given only that vector cannot tell where one ends and the other begins — “the last grouping column” can land on a session rather than the finest identity. The two fields travel under the names aniframe gives them, so <code>group_cols</code> keeps its meaning and is now fully explained by the attributes beside it.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="anicheck-020">anicheck 0.2.0<a class="anchor" aria-label="anchor" href="#anicheck-020"></a></h2>
 <div class="section level3">
