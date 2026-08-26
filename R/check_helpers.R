@@ -34,6 +34,20 @@ aniframe_group_cols <- function(data) {
   unique(c(what, when))
 }
 
+# Internal: the declarations `group_cols` is built from, carried through to
+# the check object under their own names. `group_cols` concatenates identity
+# and temporal context, so a consumer cannot tell where one ends and the
+# other begins — and picking "the last grouping column" can land on a session
+# or trial rather than the finest identity (animovement/anivis#21). These are
+# the aniframe metadata fields verbatim, not a new concept.
+aniframe_declarations <- function(data) {
+  meta <- aniframe::get_metadata(data)
+  list(
+    variables_what = meta$variables_what,
+    variables_when = meta$variables_when
+  )
+}
+
 # Internal: validate the requested variable(s). Missingness is meaningful for
 # any column, so (unlike a numeric measure) there is no type requirement.
 check_na_variable <- function(data, variable) {

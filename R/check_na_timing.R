@@ -59,6 +59,7 @@ check_na_timing.aniframe <- function(data, variable = "x", ...) {
   variable <- check_na_variable(data, variable)
   meta <- aniframe::get_metadata(data)
   group_cols <- aniframe_group_cols(data)
+  decl <- aniframe_declarations(data)
 
   df <- as.data.frame(data)
   df$.missing <- Reduce(`|`, lapply(variable, function(v) is.na(df[[v]])))
@@ -88,6 +89,8 @@ check_na_timing.aniframe <- function(data, variable = "x", ...) {
       NA_character_
     },
     group_cols = group_cols,
+    variables_what = decl$variables_what,
+    variables_when = decl$variables_when,
     groups = groups,
     time_step = na_timing_step(parts),
     time_range = c(min(df$time), max(df$time))
@@ -106,7 +109,9 @@ new_check_na_timing <- function(
   group_cols,
   groups,
   time_step,
-  time_range
+  time_range,
+  variables_what = character(),
+  variables_when = character()
 ) {
   class(x) <- c(
     "check_na_timing",
@@ -118,6 +123,8 @@ new_check_na_timing <- function(
   attr(x, "variable") <- variable
   attr(x, "unit_time") <- unit_time
   attr(x, "group_cols") <- group_cols
+  attr(x, "variables_what") <- variables_what
+  attr(x, "variables_when") <- variables_when
   attr(x, "groups") <- groups
   attr(x, "time_step") <- time_step
   attr(x, "time_range") <- time_range
