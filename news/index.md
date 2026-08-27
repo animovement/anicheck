@@ -2,20 +2,23 @@
 
 ## anicheck (development version)
 
-### New features
+### Added
 
-- Check objects now carry the aniframe declarations they were built
-  from, as `variables_what` and `variables_when` attributes
+- Check objects carry the aniframe declarations they were built from, as
+  `variables_what` and `variables_when` attributes
   (animovement/anivis#21). `group_cols` concatenates identity and
   temporal context, so a consumer given only that vector cannot tell
   where one ends and the other begins — “the last grouping column” can
   land on a session rather than the finest identity. The two fields
   travel under the names aniframe gives them, so `group_cols` keeps its
-  meaning and is now fully explained by the attributes beside it.
+  meaning and is now explained by the attributes beside it.
 
-## anicheck 0.2.0
+## anicheck 0.2.0 (2026-06-29)
 
-### New features
+First substantial release. anicheck diagnoses movement-data quality,
+returning objects that anivis knows how to draw.
+
+### Added
 
 - [`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md)
   summarises *where* missing values fall, as one row per gap.
@@ -24,18 +27,25 @@
 - [`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md)
   reduces per-keypoint tracking confidence to a compact density grid and
   five-number summary.
-- Each check gains [`summary()`](https://rdrr.io/r/base/summary.html)
-  and [`print()`](https://rdrr.io/r/base/print.html) methods for a
-  per-group overview.
-
-### Plotting
-
-- [`plot()`](https://rdrr.io/r/graphics/plot.default.html) methods for
-  the check objects ensure the companion
-  [anivis](https://animovement.dev/anivis/) package is installed
-  (prompting if not) and then delegate to it, mirroring the performance
+- [`summary()`](https://rdrr.io/r/base/summary.html) and
+  [`print()`](https://rdrr.io/r/base/print.html) methods for each check,
+  giving a per-group overview.
+- [`plot()`](https://rdrr.io/r/graphics/plot.default.html) methods that
+  ensure [anivis](https://animovement.dev/anivis/) is installed,
+  prompting if not, and then delegate to it — mirroring the performance
   / see split in easystats.
 
-### Internals
+### Removed
 
-- Dropped the unused `dplyr` dependency; declared `stats` and `utils`.
+- The unused `dplyr` dependency. `stats` and `utils` are now declared.
+
+## anicheck 0.1.1
+
+### Added
+
+- [`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md),
+  the first check.
+
+## anicheck 0.1.0
+
+Package skeleton. No user-facing functions yet.
