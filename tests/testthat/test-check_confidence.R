@@ -34,7 +34,7 @@ test_that("check_confidence errors when data is not an aniframe", {
 })
 
 test_that("check_confidence returns correct class", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:4,
     x = 1:4,
     y = 1:4,
@@ -50,7 +50,7 @@ test_that("check_confidence returns correct class", {
 })
 
 test_that("check_confidence returns correct columns", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:4,
     x = 1:4,
     y = 1:4,
@@ -67,7 +67,7 @@ test_that("check_confidence returns correct columns", {
 })
 
 test_that("check_confidence uses 'keypoint' as default grouping", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:4,
     x = 1:4,
     y = 1:4,
@@ -83,7 +83,7 @@ test_that("check_confidence uses 'keypoint' as default grouping", {
 })
 
 test_that("check_confidence respects custom `by` argument", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:4,
     x = 1:4,
     y = 1:4,
@@ -101,7 +101,7 @@ test_that("check_confidence respects custom `by` argument", {
 })
 
 test_that("check_confidence works with multiple grouping variables", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:8,
     x = 1:8,
     y = 1:8,
@@ -117,7 +117,7 @@ test_that("check_confidence works with multiple grouping variables", {
 })
 
 test_that("check_confidence calculates statistics correctly", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:5,
     x = 1:5,
     y = 1:5,
@@ -135,7 +135,7 @@ test_that("check_confidence calculates statistics correctly", {
 })
 
 test_that("check_confidence handles NA values in confidence", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:5,
     x = 1:5,
     y = 1:5,
@@ -153,7 +153,7 @@ test_that("check_confidence handles NA values in confidence", {
 # print.check_confidence --------------------------------------------------
 
 test_that("print.check_confidence calls check_anivis", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:2,
     x = 1:2,
     y = 1:2,
@@ -170,7 +170,7 @@ test_that("print.check_confidence calls check_anivis", {
 # plot.check_confidence ---------------------------------------------------
 
 test_that("plot.check_confidence calls check_anivis", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     time = 1:2,
     x = 1:2,
     y = 1:2,

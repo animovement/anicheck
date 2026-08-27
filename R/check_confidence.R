@@ -36,7 +36,7 @@ check_confidence.default <- function(
   by = NULL,
   ...
 ) {
-  if (!aniframe::is_aniframe(data)) {
+  if (!anicore::is_aniframe(data)) {
     cli::cli_abort("Data is not an aniframe.")
   }
 

@@ -4,5 +4,7 @@ S3method(check_confidence,default)
 S3method(plot,check_confidence)
 S3method(print,check_confidence)
 export(check_confidence)
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  ":=",
+  .data
+)
