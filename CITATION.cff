@@ -8,8 +8,8 @@ message: 'To cite package "anicheck" in publications use:'
 type: software
 license: MIT
 title: 'anicheck: An R package for diagnosing movement data quality.'
-version: 0.2.0
-date-released: 2025-10-21
+version: 0.3.0
+date-released: 2026-08-28
 identifiers:
   - type: doi
     value: 10.5281/zenodo.21033042
