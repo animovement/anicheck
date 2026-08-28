@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/animovement/anicheck/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/animovement/anicheck/blob/v0.3.0/inst/CITATION)
 
 Roald-Arbøl M (2026). “animovement: An R toolbox for analysing movement
 across space and time.”
