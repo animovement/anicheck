@@ -1,7 +1,7 @@
 Package: anicheck
 Type: Package
 Title: An R package for diagnosing movement data quality
-Version: 0.2.0.9000
+Version: 0.3.0
 Authors@R: 
     person(
       "Mikkel", 
@@ -19,7 +19,7 @@ LazyData: true
 Depends:
     R (>= 4.1.0)
 Imports:
-    anicore,
+    anicore (>= 0.8.0),
     cli,
     rlang,
     stats,
