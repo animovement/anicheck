@@ -3,7 +3,7 @@
 make_na_single <- function() {
   # x: gap at t2-3 (len 2) and t8 (len 1).  y: an isolated NA at t5 (its
   # neighbours t4/t6 are present in x too, so it stays its own run in the union).
-  aniframe::as_aniframe(data.frame(
+  anicore::as_aniframe(data.frame(
     time = 1:8,
     x = c(1, NA, NA, 4, 5, 6, 7, NA),
     y = c(1, 1, 1, 1, NA, 1, 1, 1)
@@ -12,7 +12,7 @@ make_na_single <- function() {
 
 make_na_multi_keypoint <- function() {
   # head: gap at t2-3 (len 2).  tail: no gaps.
-  aniframe::as_aniframe(data.frame(
+  anicore::as_aniframe(data.frame(
     keypoint = rep(c("head", "tail"), each = 6),
     time = rep(1:6, 2),
     x = c(1, NA, NA, 4, 5, 6, 1, 2, 3, 4, 5, 6)
@@ -48,7 +48,7 @@ test_that("check_na_timing keeps grouping columns and per-group totals", {
 })
 
 test_that("check_na_timing handles data with no missing values", {
-  af <- aniframe::as_aniframe(data.frame(time = 1:5, x = 1:5))
+  af <- anicore::as_aniframe(data.frame(time = 1:5, x = 1:5))
   out <- check_na_timing(af)
   expect_equal(nrow(out), 0L)
   expect_equal(summary(out)$n_gaps, 0L)
@@ -89,7 +89,7 @@ test_that("print.check_na_timing returns the object invisibly", {
 })
 
 test_that("check_na_timing uses a unit time step when groups are single-frame", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     keypoint = c("a", "b"),
     time = c(1, 1),
     x = c(NA, 2)

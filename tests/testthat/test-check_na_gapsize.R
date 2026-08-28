@@ -2,7 +2,7 @@
 
 make_gap_single <- function() {
   # x gaps: t2-3 (len 2), t5-6 (len 2), t8 (len 1) -> sizes {2:2, 1:1}.
-  aniframe::as_aniframe(data.frame(
+  anicore::as_aniframe(data.frame(
     time = 1:8,
     x = c(1, NA, NA, 4, NA, NA, 7, NA)
   ))
@@ -11,7 +11,7 @@ make_gap_single <- function() {
 make_gap_multi_keypoint <- function() {
   # head: gaps len 2 and len 2 -> size 2 occurs twice.
   # tail: one gap len 1 -> size 1 occurs once.
-  aniframe::as_aniframe(data.frame(
+  anicore::as_aniframe(data.frame(
     keypoint = rep(c("head", "tail"), each = 8),
     time = rep(1:8, 2),
     x = c(1, NA, NA, 4, NA, NA, 7, 8, 1, NA, 3, 4, 5, 6, 7, 8)
@@ -40,7 +40,7 @@ test_that("check_na_gapsize splits the tabulation per group", {
 })
 
 test_that("check_na_gapsize handles data with no missing values", {
-  af <- aniframe::as_aniframe(data.frame(time = 1:5, x = 1:5))
+  af <- anicore::as_aniframe(data.frame(time = 1:5, x = 1:5))
   out <- check_na_gapsize(af)
   expect_equal(nrow(out), 0L)
   expect_equal(summary(out)$n_gaps, 0L)

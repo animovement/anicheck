@@ -1,7 +1,7 @@
 # Tests for check_confidence(), its summary/print, and its plot method.
 
 make_conf <- function() {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     keypoint = rep(c("head", "tail"), each = 4),
     time = rep(1:4, 2),
     x = rnorm(8),
@@ -28,7 +28,7 @@ test_that("check_confidence keeps a per-keypoint summary for the overlay", {
 })
 
 test_that("check_confidence errors without a confidence column or aniframe", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     keypoint = rep("head", 3),
     time = 1:3,
     x = 1:3,
@@ -50,7 +50,7 @@ test_that("print.check_confidence returns the object invisibly", {
 })
 
 test_that("check_confidence collapses a constant-confidence keypoint to a spike", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     keypoint = rep(c("flat", "vary"), each = 4),
     time = rep(1:4, 2),
     x = rnorm(8),
@@ -65,7 +65,7 @@ test_that("check_confidence collapses a constant-confidence keypoint to a spike"
 })
 
 test_that("check_confidence summarises an all-missing-confidence keypoint as NA", {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     keypoint = rep(c("none", "ok"), each = 4),
     time = rep(1:4, 2),
     x = rnorm(8),
@@ -119,13 +119,13 @@ test_that("check objects carry the declarations group_cols is built from", {
     y = rnorm(n),
     confidence = runif(n)
   )
-  af <- aniframe::as_aniframe(d, variables_what = c("animal", "bodypart"))
+  af <- anicore::as_aniframe(d, variables_what = c("animal", "bodypart"))
 
   chk <- check_confidence(af)
 
   expect_equal(attr(chk, "group_cols"), c("animal", "bodypart", "session"))
   # The aniframe metadata fields verbatim, under their own names.
-  expect_equal(attr(chk, "variables_what"), aniframe::get_variables_what(af))
+  expect_equal(attr(chk, "variables_what"), anicore::get_variables_what(af))
   expect_equal(attr(chk, "variables_what"), c("animal", "bodypart"))
-  expect_equal(attr(chk, "variables_when"), aniframe::get_variables_when(af))
+  expect_equal(attr(chk, "variables_when"), anicore::get_variables_when(af))
 })

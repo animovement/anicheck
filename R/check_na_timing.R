@@ -34,7 +34,7 @@
 #' @seealso [plot.check_na_timing()], [summary.check_na_timing()]
 #'
 #' @examples
-#' af <- aniframe::as_aniframe(data.frame(
+#' af <- anicore::as_aniframe(data.frame(
 #'   keypoint = rep(c("head", "tail"), each = 6),
 #'   time = rep(1:6, 2),
 #'   x = c(1, NA, NA, 4, 5, 6, 1, 2, 3, 4, 5, 6)
@@ -57,7 +57,7 @@ check_na_timing.default <- function(data, ...) {
 #' @export
 check_na_timing.aniframe <- function(data, variable = "x", ...) {
   variable <- check_na_variable(data, variable)
-  meta <- aniframe::get_metadata(data)
+  meta <- anicore::get_metadata(data)
   group_cols <- aniframe_group_cols(data)
   decl <- aniframe_declarations(data)
 

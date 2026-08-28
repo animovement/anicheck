@@ -50,7 +50,7 @@ in the companion package draws it. (\verb{check_*()} functions are destined for 
 \pkg{anicheck} package; they are kept here for now for convenience.)
 }
 \examples{
-af <- aniframe::as_aniframe(data.frame(
+af <- anicore::as_aniframe(data.frame(
   keypoint = rep(c("head", "tail"), each = 6),
   time = rep(1:6, 2),
   x = c(1, NA, NA, 4, 5, 6, 1, 2, 3, 4, 5, 6)

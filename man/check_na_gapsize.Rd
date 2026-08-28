@@ -45,7 +45,7 @@ destined for the \pkg{anicheck} package; they are kept here for now for
 convenience.)
 }
 \examples{
-af <- aniframe::as_aniframe(data.frame(
+af <- anicore::as_aniframe(data.frame(
   keypoint = rep(c("head", "tail"), each = 8),
   time = rep(1:8, 2),
   x = c(1, NA, NA, 4, NA, NA, 7, 8, 1, NA, 3, 4, 5, 6, 7, 8)

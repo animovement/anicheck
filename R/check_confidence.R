@@ -30,7 +30,7 @@
 #' @seealso [plot.check_confidence()]
 #'
 #' @examples
-#' af <- aniframe::as_aniframe(data.frame(
+#' af <- anicore::as_aniframe(data.frame(
 #'   keypoint = rep(c("head", "tail"), each = 50),
 #'   time = rep(1:50, 2),
 #'   x = rnorm(100),

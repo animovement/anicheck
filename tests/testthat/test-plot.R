@@ -4,7 +4,7 @@
 # are stand-ins, so the test needs no anivis installed.
 
 make_conf <- function() {
-  af <- aniframe::as_aniframe(data.frame(
+  af <- anicore::as_aniframe(data.frame(
     keypoint = c("a", "b"),
     time = c(1, 1),
     x = c(1, 2),
@@ -15,7 +15,7 @@ make_conf <- function() {
 }
 
 make_na <- function() {
-  aniframe::as_aniframe(data.frame(time = 1:4, x = c(1, NA, NA, 4)))
+  anicore::as_aniframe(data.frame(time = 1:4, x = c(1, NA, NA, 4)))
 }
 
 test_that("plot.check_* ensure anivis then delegate via NextMethod()", {

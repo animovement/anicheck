@@ -28,7 +28,7 @@ group_key <- function(tbl, group_cols) {
 # non-time `variables_when` column. Derived straight from the metadata so the
 # check_* family has no dependency on anivis internals.
 aniframe_group_cols <- function(data) {
-  meta <- aniframe::get_metadata(data)
+  meta <- anicore::get_metadata(data)
   what <- intersect(meta$variables_what, names(data))
   when <- setdiff(intersect(meta$variables_when, names(data)), "time")
   unique(c(what, when))
@@ -41,7 +41,7 @@ aniframe_group_cols <- function(data) {
 # or trial rather than the finest identity (animovement/anivis#21). These are
 # the aniframe metadata fields verbatim, not a new concept.
 aniframe_declarations <- function(data) {
-  meta <- aniframe::get_metadata(data)
+  meta <- anicore::get_metadata(data)
   list(
     variables_what = meta$variables_what,
     variables_when = meta$variables_when
