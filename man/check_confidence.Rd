@@ -3,38 +3,59 @@
 \name{check_confidence}
 \alias{check_confidence}
 \alias{check_confidence.default}
-\title{Visualize the Distribution of Confidence Values per Keypoint}
+\alias{check_confidence.aniframe}
+\title{Check the Distribution of Tracking Confidence}
 \usage{
 check_confidence(data, ...)
 
-\method{check_confidence}{default}(data, by = NULL, ...)
+\method{check_confidence}{default}(data, ...)
+
+\method{check_confidence}{aniframe}(data, n = 256, ...)
 }
 \arguments{
-\item{data}{A data frame that contains at least the columns
-\code{keypoint} and \code{confidence}. Additional grouping variables can be
-supplied via the \code{by} argument.}
+\item{data}{An aniframe object with a \code{confidence} column.}
 
-\item{...}{Arguments passed down to the plotting functions.}
+\item{...}{Additional arguments (currently unused).}
 
-\item{by}{(Optional) A character vector or column name(s) used to
-group the data before summarising. If \code{NULL}, the function defaults to
-\code{"keypoint"}.}
+\item{n}{Density grid resolution per keypoint. Default \code{256}.}
 }
 \value{
-A tibble/data frame with one row per group defined by \code{by},
-containing the following columns:
-\describe{
-\item{conf_median}{Median of \code{confidence} within the group (NA-removed).}
-\item{conf_q1}{First quartile (25th percentile) of \code{confidence}.}
-\item{conf_q3}{Third quartile (75th percentile) of \code{confidence}.}
-\item{conf_min}{Minimum value of \code{confidence} within the group (NA-removed).}
-\item{conf_max}{Maximum value of \code{confidence} within the group (NA-removed).}
-}
-The result can be passed directly to \code{ggplot2} or other visualization
-packages.
+A data frame of class \code{check_confidence} with one row per
+(keypoint, density grid point): the identity columns, the confidence
+\code{value}, and its kernel \code{density}. A per-keypoint five-number summary (with
+\code{n}, \code{mean}, \code{sd}) and the grouping columns are stored as attributes. Use
+\code{\link[=summary]{summary()}} for a trimmed overview.
 }
 \description{
-\code{check_confidence()} computes summary statistics for confidence values
-grouped by a chosen variable (defaulting to \code{keypoint}) and returns a
-tidy data frame that can be visualized with standard plotting functions.
+Summarises the per-frame tracking \code{confidence} (or likelihood) of each
+keypoint. A keypoint with a low median or a long low tail is one the tracker
+was often unsure about - exactly the points whose coordinates deserve
+suspicion. This check reduces the confidence column to a per-keypoint
+distribution, and \code{\link[=plot.check_confidence]{plot.check_confidence()}} draws it as a violin.
+}
+\details{
+The distribution is reduced to a compact kernel-density estimate (a fixed-size
+grid) per keypoint, plus a five-number summary, so the object stays small
+however long the recording - the violin is drawn straight from the stored
+density.
+
+This is the data-generating half of the check. The plotting method
+(\code{\link[=plot.check_confidence]{plot.check_confidence()}}) lives in \pkg{anivis}, mirroring the
+\pkg{performance} / \pkg{see} split in easystats. (\verb{check_*()} functions are
+destined for the \pkg{anicheck} package; they are kept here for now for
+convenience.)
+}
+\examples{
+af <- anicore::as_aniframe(data.frame(
+  keypoint = rep(c("head", "tail"), each = 50),
+  time = rep(1:50, 2),
+  x = rnorm(100),
+  y = rnorm(100)
+))
+af$confidence <- c(rbeta(50, 8, 2), rbeta(50, 2, 5))
+check_confidence(af)
+
+}
+\seealso{
+\code{\link[=plot.check_confidence]{plot.check_confidence()}}
 }

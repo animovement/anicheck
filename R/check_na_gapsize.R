@@ -1,87 +1,215 @@
-#' #' Visualize the occurrence of gap sizes in the data
-#' #'
-#' #' This function generates a plot showing the distribution of gap sizes (consecutive
-#' #' `NA` values) in the data, either aggregated or broken down by keypoints.
-#' #'
-#' #' @param data A data frame containing at least the columns `x`
-#' #' and `keypoint`.
-#' #' @param limit An integer specifying the maximum gap size to include in the plot.
-#' #' Default is 10.
-#' #' @param include_total Logical. If `TRUE`, includes the total count of gaps of
-#' #' each size in the plot. Default is `TRUE`.
-#' #' @param by_keypoint Logical. If `TRUE`, generates a separate plot for each keypoint.
-#' #' If `FALSE`, creates a single aggregated plot for all keypoints. Default is `TRUE`.
-#' #'
-#' #' @return A `patchwork` object combining one or more ggplots that visualize the
-#' #' occurrence of gap sizes (consecutive `NA`s) in the data.
-#' #'
-#' #' @details
-#' #' - The plot highlights the most common gap sizes in the data, ordered by frequency.
-#' #' - Different colors represent the occurrence (`indianred`), total counts (`steelblue`),
-#' #' and border outlines (`black`).
-#' #' - The function uses `patchwork` to combine multiple plots when `by_keypoint = TRUE`.
-#' #'
-#' #' @examples
-#' #' library(dplyr)
-#' #' library(ggplot2)
-#' #' library(patchwork)
-#' #' data <- dplyr::tibble(
-#' #'   x = c(NA, NA, 3, NA, 5, 6, NA, NA, NA, 10),
-#' #'   keypoint = factor(rep(c("head", "arm"), each = 5))
-#' #' )
-#' #' check_na_gapsize(data, limit = 5, include_total = TRUE, by_keypoint = TRUE)
-#' #'
-#' #' @export
-#' check_na_gapsize <- function(
-#'   data,
-#'   limit = 10,
-#'   include_total = TRUE,
-#'   by_keypoint = TRUE
-#' ) {
-#'   n_keypoints <- nlevels(data$keypoint)
-#'   color_occurrence = "indianred"
-#'   color_total = "steelblue"
-#'   color_border = "black"
-#'   keypoints <- levels(data$keypoint)
-#'   na_plots <- list()
+#' Check the Distribution of Missing-Value Gap Sizes
 #'
-#'   if (by_keypoint == TRUE) {
-#'     for (j in 1:length(keypoints)) {
-#'       df <- data |>
-#'         dplyr::ungroup() |>
-#'         dplyr::filter(.data$keypoint == keypoints[j]) |>
-#'         dplyr::select("x")
+#' Tabulates the *lengths* of the runs of consecutive missing values (`NA`) in an
+#' aniframe - how often a gap of each size occurs. A recording riddled with
+#' single-frame dropouts (easy to interpolate) has a very different gap-size
+#' profile from one with a few long blackouts (which interpolation cannot
+#' rescue), even when their total missing counts match; this check exposes that
+#' profile, and [plot.check_na_gapsize()] draws it as a bar chart.
 #'
-#'       na_plots[[j]] <- ggplot_na_gapsize(
-#'         df,
-#'         limit = limit,
-#'         include_total = include_total,
-#'         keypoint = keypoints[j],
-#'         title = NULL,
-#'         subtitle = NULL
-#'       )
-#'     }
-#'   } else {
-#'     df <- data |>
-#'       dplyr::select("x")
+#' This is the data-generating half of the check. The plotting method
+#' ([plot.check_na_gapsize()]) lives in \pkg{anivis}, mirroring the
+#' \pkg{performance} / \pkg{see} split in easystats. (`check_*()` functions are
+#' destined for the \pkg{anicheck} package; they are kept here for now for
+#' convenience.)
 #'
-#'     na_plots[[1]] <- ggplot_na_gapsize(df, title = NULL, subtitle = NULL)
-#'   }
+#' @param data An aniframe object.
+#' @param variable Name(s) of the column(s) whose missingness to track. A frame
+#'   counts as missing when *any* named column is `NA` there. Defaults to
+#'   `"x"`.
+#' @param ... Additional arguments (currently unused).
 #'
-#'   output_plot <- patchwork::wrap_plots(na_plots) +
-#'     patchwork::plot_annotation(
-#'       title = "Occurrence of gap sizes",
-#'       subtitle = "Gap sizes (NAs in a row) ordered by most common",
-#'       theme = theme(
-#'         plot.subtitle = ggtext::element_markdown(lineheight = 1.1),
-#'         legend.position = "bottom"
-#'       )
-#'     ) +
-#'     patchwork::plot_layout(
-#'       axes = "collect",
-#'       axis_titles = "collect",
-#'       guides = "collect"
-#'     )
+#' @return A data frame of class `check_na_gapsize` with one row per
+#'   (group, gap size): the aniframe's grouping columns, the `gap_size` (run
+#'   length in frames), the number of gaps of that size (`n_gaps`), and the total
+#'   missing frames they account for (`n_na` = `gap_size` x `n_gaps`). Per-group
+#'   totals and the checked variable(s) are stored as attributes. Use
+#'   [summary()] for a per-group overview.
 #'
-#'   return(output_plot)
-#' }
+#' @seealso [plot.check_na_gapsize()]
+#'
+#' @examples
+#' af <- anicore::as_aniframe(data.frame(
+#'   keypoint = rep(c("head", "tail"), each = 8),
+#'   time = rep(1:8, 2),
+#'   x = c(1, NA, NA, 4, NA, NA, 7, 8, 1, NA, 3, 4, 5, 6, 7, 8)
+#' ))
+#' check_na_gapsize(af)
+#' summary(check_na_gapsize(af))
+#'
+#' @export
+check_na_gapsize <- function(data, ...) {
+  UseMethod("check_na_gapsize")
+}
+
+#' @rdname check_na_gapsize
+#' @export
+check_na_gapsize.default <- function(data, ...) {
+  cli::cli_abort("{.arg data} must be an aniframe.")
+}
+
+#' @rdname check_na_gapsize
+#' @export
+check_na_gapsize.aniframe <- function(data, variable = "x", ...) {
+  variable <- check_na_variable(data, variable)
+  group_cols <- aniframe_group_cols(data)
+  decl <- aniframe_declarations(data)
+
+  df <- as.data.frame(data)
+  df$.missing <- Reduce(`|`, lapply(variable, function(v) is.na(df[[v]])))
+
+  parts <- split_by_group_cols(df, group_cols)
+  out <- do.call(
+    rbind,
+    lapply(parts, na_gapsize_tabulate, group_cols = group_cols)
+  )
+  if (is.null(out)) {
+    out <- empty_gapsize(group_cols)
+  }
+  rownames(out) <- NULL
+
+  new_check_na_gapsize(
+    out,
+    variable = variable,
+    group_cols = group_cols,
+    groups = group_totals(df, group_cols),
+    variables_what = decl$variables_what,
+    variables_when = decl$variables_when
+  )
+}
+
+# Internal: tabulate one group's gap lengths into rows of (gap_size, n_gaps,
+# n_na), ascending by size. Returns NULL when the group has no gaps.
+na_gapsize_tabulate <- function(d, group_cols) {
+  runs <- rle(d$.missing[order(d$time)])
+  lengths <- runs$lengths[runs$values]
+  if (!length(lengths)) {
+    return(NULL)
+  }
+  tab <- table(lengths)
+  out <- data.frame(
+    gap_size = as.integer(names(tab)),
+    n_gaps = as.integer(tab)
+  )
+  out$n_na <- out$gap_size * out$n_gaps
+  for (col in group_cols) {
+    out[[col]] <- d[[col]][1]
+  }
+  out[c(group_cols, "gap_size", "n_gaps", "n_na")]
+}
+
+# Internal: a correctly-typed zero-row gap-size table (data with no NAs at all).
+empty_gapsize <- function(group_cols) {
+  cols <- c(
+    stats::setNames(rep(list(character(0)), length(group_cols)), group_cols),
+    list(gap_size = integer(0), n_gaps = integer(0), n_na = integer(0))
+  )
+  do.call(data.frame, c(cols, stringsAsFactors = FALSE))
+}
+
+# Internal: low-level constructor. Tags the data frame with the check class and
+# stashes the per-group totals and checked variable(s) as attributes for the
+# summary / print / plot methods.
+new_check_na_gapsize <- function(
+  x,
+  variable,
+  group_cols,
+  groups,
+  variables_what = character(),
+  variables_when = character()
+) {
+  class(x) <- c(
+    "check_na_gapsize",
+    "anivis_check_na_gapsize",
+    "tbl_df",
+    "tbl",
+    "data.frame"
+  )
+  attr(x, "variable") <- variable
+  attr(x, "group_cols") <- group_cols
+  attr(x, "variables_what") <- variables_what
+  attr(x, "variables_when") <- variables_when
+  attr(x, "groups") <- groups
+  x
+}
+
+#' Summarise a Gap-Size Check
+#'
+#' Reduces a [check_na_gapsize()] object to a per-group overview: frame and
+#' missing counts, the percentage missing, the number of gaps, and the longest
+#' gap. The print-side mirror of anivis's `as_plot_data()`.
+#'
+#' @param object A `check_na_gapsize` object.
+#' @param ... Additional arguments (currently unused).
+#'
+#' @return A data frame with one row per group.
+#'
+#' @seealso [check_na_gapsize()]
+#' @keywords internal
+#' @export
+summary.check_na_gapsize <- function(object, ...) {
+  group_cols <- attr(object, "group_cols")
+  groups <- attr(object, "groups")
+
+  gkey <- group_key(groups, group_cols)
+  okey <- group_key(object, group_cols)
+  by_group <- split(object, factor(okey, levels = gkey))
+
+  out <- groups
+  out$pct_missing <- ifelse(
+    out$n_frames > 0,
+    round(100 * out$n_missing / out$n_frames, 1),
+    0
+  )
+  out$n_gaps <- vapply(by_group, function(d) sum(d$n_gaps), integer(1))
+  out$longest_gap <- vapply(
+    by_group,
+    function(d) if (nrow(d)) max(d$gap_size) else 0L,
+    integer(1)
+  )
+  rownames(out) <- NULL
+  out[c(
+    group_cols,
+    "n_frames",
+    "n_missing",
+    "pct_missing",
+    "n_gaps",
+    "longest_gap"
+  )]
+}
+
+#' @export
+print.check_na_gapsize <- function(x, ...) {
+  variable <- attr(x, "variable")
+  group_cols <- attr(x, "group_cols")
+  s <- summary(x)
+
+  total <- sum(s$n_frames)
+  n_missing <- sum(s$n_missing)
+  n_gaps <- sum(s$n_gaps)
+  longest <- if (nrow(s)) max(s$longest_gap) else 0L
+  pct <- if (total) round(100 * n_missing / total, 1) else 0
+
+  cli::cli_h3("Check: missing-value gap sizes")
+  cli::cli_text(
+    "Tracking {.field {variable}}: {n_missing} missing ({pct}%) across
+     {n_gaps} gap{?s}, longest {longest} frame{?s}."
+  )
+
+  if (length(group_cols) && nrow(s) > 1L) {
+    labels <- do.call(
+      paste,
+      c(lapply(group_cols, function(col) as.character(s[[col]])), sep = " | ")
+    )
+    cli::cli_text("By group ({.field {group_cols}}):")
+    cli::cli_ul(sprintf(
+      "%s: %d gap%s, longest %d",
+      labels,
+      s$n_gaps,
+      ifelse(s$n_gaps == 1L, "", "s"),
+      s$longest_gap
+    ))
+  }
+
+  invisible(x)
+}
