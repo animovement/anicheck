@@ -1,3 +1,5 @@
+# anicheck (development version)
+
 # anicheck 0.3.0 (2026-08-28)
 
 ## Changed
