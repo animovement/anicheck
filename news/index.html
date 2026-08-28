@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">anicheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,13 +50,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="anicheck-development-version">anicheck (development version)<a class="anchor" aria-label="anchor" href="#anicheck-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.3.0" id="anicheck-030-2026-08-28">anicheck 0.3.0 (2026-08-28)<a class="anchor" aria-label="anchor" href="#anicheck-030-2026-08-28"></a></h2>
 <div class="section level3">
-<h3 id="changed-development-version">Changed<a class="anchor" aria-label="anchor" href="#changed-development-version"></a></h3>
-<ul><li>The core data structures come from <code>anicore</code>, which is what the <code>aniframe</code> package was renamed to in its 0.8.0 (animovement/anicore#84). The <code>aniframe</code> class keeps its name; only the package providing it changed, so <code>anicore</code> replaces <code>aniframe</code> in <code>Imports</code> and in every <code>aniframe::</code> call.</li>
+<h3 id="changed-0-3-0">Changed<a class="anchor" aria-label="anchor" href="#changed-0-3-0"></a></h3>
+<ul><li><p>The minimum <code>anicore</code> is 0.8.0, the first version published under that name — the dependency was renamed without a version constraint, so nothing recorded that a pre-rename <code>aniframe</code> will not do.</p></li>
+<li><p>The core data structures come from <code>anicore</code>, which is what the <code>aniframe</code> package was renamed to in its 0.8.0 (animovement/anicore#84). The <code>aniframe</code> class keeps its name; only the package providing it changed, so <code>anicore</code> replaces <code>aniframe</code> in <code>Imports</code> and in every <code>aniframe::</code> call.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="added-development-version">Added<a class="anchor" aria-label="anchor" href="#added-development-version"></a></h3>
+<h3 id="added-0-3-0">Added<a class="anchor" aria-label="anchor" href="#added-0-3-0"></a></h3>
 <ul><li>Check objects carry the aniframe declarations they were built from, as <code>variables_what</code> and <code>variables_when</code> attributes (animovement/anivis#21). <code>group_cols</code> concatenates identity and temporal context, so a consumer given only that vector cannot tell where one ends and the other begins — “the last grouping column” can land on a session rather than the finest identity. The two fields travel under the names aniframe gives them, so <code>group_cols</code> keeps its meaning and is now explained by the attributes beside it.</li>
 </ul></div>
 </div>

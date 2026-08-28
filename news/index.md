@@ -1,8 +1,12 @@
 # Changelog
 
-## anicheck (development version)
+## anicheck 0.3.0 (2026-08-28)
 
 ### Changed
+
+- The minimum `anicore` is 0.8.0, the first version published under that
+  name — the dependency was renamed without a version constraint, so
+  nothing recorded that a pre-rename `aniframe` will not do.
 
 - The core data structures come from `anicore`, which is what the
   `aniframe` package was renamed to in its 0.8.0

@@ -33,6 +33,6 @@ data quality.”
       author = {Mikkel Roald-Arbøl},
       year = {2026},
       doi = {10.5281/zenodo.21033042},
-      version = {0.2.0.9000},
+      version = {0.3.0},
       url = {https://animovement.dev/anicheck/},
     }
