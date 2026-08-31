@@ -13,7 +13,7 @@ An R package for diagnosing movement data quality.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://animovement.dev/anicheck/}
+  \item \url{https://animovement.dev/anicheck/}
   \item \url{https://github.com/animovement/anicheck/}
   \item Report bugs at \url{https://github.com/animovement/anicheck/issues}
 }

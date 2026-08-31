@@ -8,6 +8,18 @@ split_by_group_cols <- function(df, group_cols) {
   split(df, factor(key, levels = unique(key)))
 }
 
+# Internal: a data frame with the given columns and no rows. do.call(rbind, list())
+# is NULL, so every per-group summary needs somewhere to land when the frame it
+# summarises has no rows at all -- otherwise the check object carries a NULL
+# where its methods expect a table.
+empty_rows <- function(group_cols, numeric_cols) {
+  cols <- c(
+    stats::setNames(rep(list(character(0)), length(group_cols)), group_cols),
+    stats::setNames(rep(list(numeric(0)), length(numeric_cols)), numeric_cols)
+  )
+  do.call(data.frame, c(cols, stringsAsFactors = FALSE))
+}
+
 # Internal: a stable per-row group key (tab-joined to avoid collisions). Returns
 # "all" when there are no grouping columns, and length-0 for an empty frame.
 group_key <- function(tbl, group_cols) {
@@ -87,6 +99,12 @@ group_totals <- function(df, group_cols) {
       row[c(group_cols, "n_frames", "n_missing", "time_min", "time_max")]
     })
   )
+  if (is.null(out)) {
+    out <- empty_rows(
+      group_cols,
+      c("n_frames", "n_missing", "time_min", "time_max")
+    )
+  }
   rownames(out) <- NULL
   out
 }
@@ -130,6 +148,12 @@ distribution_summary <- function(df, group_cols, value_col) {
       )]
     })
   )
+  if (is.null(out)) {
+    out <- empty_rows(
+      group_cols,
+      c("n", "mean", "sd", "min", "q25", "median", "q75", "max")
+    )
+  }
   rownames(out) <- NULL
   out
 }

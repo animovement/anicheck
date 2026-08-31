@@ -78,6 +78,12 @@ check_na_timing.aniframe <- function(data, variable = "x", ...) {
     rbind,
     lapply(parts, na_timing_totals, group_cols = group_cols)
   )
+  if (is.null(groups)) {
+    groups <- empty_rows(
+      group_cols,
+      c("n_frames", "n_missing", "time_min", "time_max")
+    )
+  }
   rownames(groups) <- NULL
 
   new_check_na_timing(
@@ -93,7 +99,11 @@ check_na_timing.aniframe <- function(data, variable = "x", ...) {
     variables_when = decl$variables_when,
     groups = groups,
     time_step = na_timing_step(parts),
-    time_range = c(min(df$time), max(df$time))
+    time_range = if (nrow(df)) {
+      c(min(df$time), max(df$time))
+    } else {
+      rep(NA_real_, 2)
+    }
   )
 }
 
