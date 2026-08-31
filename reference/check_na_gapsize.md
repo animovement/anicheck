@@ -73,6 +73,7 @@ check_na_gapsize(af)
 #> By group (keypoint):
 #> • head: 2 gaps, longest 2
 #> • tail: 1 gap, longest 1
+#> 
 summary(check_na_gapsize(af))
 #>   keypoint n_frames n_missing pct_missing n_gaps longest_gap
 #> 1     head        8         4        50.0      2           2

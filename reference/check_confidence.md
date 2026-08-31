@@ -76,4 +76,5 @@ check_confidence(af)
 #> Confidence for 2 keypoints (median [min]):
 #> • head: 0.83 [0.49]
 #> • tail: 0.27 [0.03]
+#> 
 ```

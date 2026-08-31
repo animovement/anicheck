@@ -15,7 +15,7 @@ plot.check_na_timing() draws it as a missingness strip."><meta property="og:imag
 
     <a class="navbar-brand me-2" href="../index.html">anicheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,12 +130,13 @@ in the companion package draws it. (<code>check_*()</code> functions are destine
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">check_na_timing</span><span class="op">(</span><span class="va">af</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Check: timing of missing values </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Tracking <span style="color: #00BB00;">x</span> across 12 frames - 2 missing (16.7%) in 1 gap.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> By group (<span style="color: #00BB00;">keypoint</span>):</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • head: 33.3% missing in 1 gap (longest 2)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • tail: 0% missing in 0 gaps (longest 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Check: timing of missing values </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tracking <span style="color: #00BB00;">x</span> across 12 frames - 2 missing (16.7%) in 1 gap.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> By group (<span style="color: #00BB00;">keypoint</span>):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • head: 33.3% missing in 1 gap (longest 2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • tail: 0% missing in 0 gaps (longest 0)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">check_na_timing</span><span class="op">(</span><span class="va">af</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   keypoint n_frames n_missing pct_missing n_gaps longest_gap</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     head        6         2        33.3      1           2</span>

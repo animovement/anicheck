@@ -17,7 +17,7 @@ profile, and plot.check_na_gapsize() draws it as a bar chart."><meta property="o
 
     <a class="navbar-brand me-2" href="../index.html">anicheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,12 +128,13 @@ convenience.)</p>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">4</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">7</span>, <span class="fl">8</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">check_na_gapsize</span><span class="op">(</span><span class="va">af</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ── Check: missing-value gap sizes </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Tracking <span style="color: #00BB00;">x</span>: 5 missing (31.2%) across 3 gaps, longest 2 frames.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> By group (<span style="color: #00BB00;">keypoint</span>):</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • head: 2 gaps, longest 2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> • tail: 1 gap, longest 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ── Check: missing-value gap sizes </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Tracking <span style="color: #00BB00;">x</span>: 5 missing (31.2%) across 3 gaps, longest 2 frames.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> By group (<span style="color: #00BB00;">keypoint</span>):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • head: 2 gaps, longest 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • tail: 1 gap, longest 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">check_na_gapsize</span><span class="op">(</span><span class="va">af</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   keypoint n_frames n_missing pct_missing n_gaps longest_gap</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1     head        8         4        50.0      2           2</span>

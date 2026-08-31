@@ -84,6 +84,7 @@ check_na_timing(af)
 #> By group (keypoint):
 #> • head: 33.3% missing in 1 gap (longest 2)
 #> • tail: 0% missing in 0 gaps (longest 0)
+#> 
 summary(check_na_timing(af))
 #>   keypoint n_frames n_missing pct_missing n_gaps longest_gap
 #> 1     head        6         2        33.3      1           2
