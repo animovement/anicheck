@@ -146,18 +146,27 @@ print.check_confidence <- function(x, ...) {
   group_cols <- attr(x, "group_cols")
   s <- summary(x)
 
-  cli::cli_h3("Check: tracking confidence")
-  cli::cli_text(
-    "Confidence for {nrow(s)} keypoint{?s} (median [min]):"
-  )
-  labels <- if (length(group_cols)) {
-    do.call(
-      paste,
-      c(lapply(group_cols, function(col) as.character(s[[col]])), sep = " | ")
+  # cli_format_method() builds the same lines without emitting them, so the
+  # summary reaches stdout as one block -- capturable, and not something
+  # suppressMessages() can take away.
+  lines <- cli::cli_format_method({
+    cli::cli_h3("Check: tracking confidence")
+    cli::cli_text(
+      "Confidence for {nrow(s)} keypoint{?s} (median [min]):"
     )
-  } else {
-    "all"
-  }
-  cli::cli_ul(sprintf("%s: %.2f [%.2f]", labels, s$median, s$min))
+    labels <- if (length(group_cols)) {
+      do.call(
+        paste,
+        c(lapply(group_cols, function(col) as.character(s[[col]])), sep = " | ")
+      )
+    } else {
+      "all"
+    }
+    cli::cli_ul(sprintf("%s: %.2f [%.2f]", labels, s$median, s$min))
+  })
+
+  cat(lines, sep = "\n")
+  cat("\n")
+
   invisible(x)
 }
