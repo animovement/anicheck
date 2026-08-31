@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">anicheck</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,14 @@
 <h2 class="pkg-version" data-toc-text="development version" id="anicheck-development-version">anicheck (development version)<a class="anchor" aria-label="anchor" href="#anicheck-development-version"></a></h2>
 <div class="section level3">
 <h3 id="fixed-development-version">Fixed<a class="anchor" aria-label="anchor" href="#fixed-development-version"></a></h3>
+<ul><li>
+<p>The checks handle an aniframe with no rows (<a href="https://github.com/animovement/anicheck/issues/32" class="external-link">#32</a>). <code><a href="../reference/check_confidence.html">check_confidence()</a></code> aborted with <code>attempt to set an attribute on NULL</code>, and <code><a href="../reference/check_na_timing.html">check_na_timing()</a></code> warned twice about <code><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min()</a></code> and <code><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max()</a></code> having “no non-missing arguments” — neither message mentioning the frame being empty, which is what was actually wrong. An empty frame is a normal product of a grouped pipeline, not a malformed input: <code><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">dplyr::filter()</a></code> gives one whenever a group matches nothing.</p>
+<p>All three now return an empty check, as <code><a href="../reference/check_na_gapsize.html">check_na_gapsize()</a></code> already did.</p>
+</li>
+<li><p>An empty check survives its own <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>. <code>do.call(rbind, list())</code> is <code>NULL</code>, so a check built from no groups carried a <code>NULL</code> where its methods expect a table, and both failed with <code>invalid argument type</code>. This affected <code><a href="../reference/check_na_gapsize.html">check_na_gapsize()</a></code> too, whose empty case otherwise worked (<a href="https://github.com/animovement/anicheck/issues/32" class="external-link">#32</a>).</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="fixed-development-version-1">Fixed<a class="anchor" aria-label="anchor" href="#fixed-development-version-1"></a></h3>
 <ul><li>
 <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> on a check object writes its summary to stdout as one block, instead of emitting it as nine messages on stderr. <code>capture.output(print(x))</code> returned nothing at all before, and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages()</a></code> removed the summary entirely — so a pipeline wrapped in <code><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages()</a></code> to quiet a repetitive warning also lost its check output. The rendered summary is unchanged (<a href="https://github.com/animovement/anicheck/issues/30" class="external-link">#30</a>).</li>
 </ul></div>

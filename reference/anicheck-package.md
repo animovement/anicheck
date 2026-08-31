@@ -6,7 +6,7 @@ An R package for diagnosing movement data quality.
 
 Useful links:
 
-- <http://animovement.dev/anicheck/>
+- <https://animovement.dev/anicheck/>
 
 - <https://github.com/animovement/anicheck/>
 
