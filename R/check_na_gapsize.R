@@ -190,26 +190,34 @@ print.check_na_gapsize <- function(x, ...) {
   longest <- if (nrow(s)) max(s$longest_gap) else 0L
   pct <- if (total) round(100 * n_missing / total, 1) else 0
 
-  cli::cli_h3("Check: missing-value gap sizes")
-  cli::cli_text(
-    "Tracking {.field {variable}}: {n_missing} missing ({pct}%) across
-     {n_gaps} gap{?s}, longest {longest} frame{?s}."
-  )
-
-  if (length(group_cols) && nrow(s) > 1L) {
-    labels <- do.call(
-      paste,
-      c(lapply(group_cols, function(col) as.character(s[[col]])), sep = " | ")
+  # cli_format_method() builds the same lines without emitting them, so the
+  # summary reaches stdout as one block -- capturable, and not something
+  # suppressMessages() can take away.
+  lines <- cli::cli_format_method({
+    cli::cli_h3("Check: missing-value gap sizes")
+    cli::cli_text(
+      "Tracking {.field {variable}}: {n_missing} missing ({pct}%) across
+       {n_gaps} gap{?s}, longest {longest} frame{?s}."
     )
-    cli::cli_text("By group ({.field {group_cols}}):")
-    cli::cli_ul(sprintf(
-      "%s: %d gap%s, longest %d",
-      labels,
-      s$n_gaps,
-      ifelse(s$n_gaps == 1L, "", "s"),
-      s$longest_gap
-    ))
-  }
+
+    if (length(group_cols) && nrow(s) > 1L) {
+      labels <- do.call(
+        paste,
+        c(lapply(group_cols, function(col) as.character(s[[col]])), sep = " | ")
+      )
+      cli::cli_text("By group ({.field {group_cols}}):")
+      cli::cli_ul(sprintf(
+        "%s: %d gap%s, longest %d",
+        labels,
+        s$n_gaps,
+        ifelse(s$n_gaps == 1L, "", "s"),
+        s$longest_gap
+      ))
+    }
+  })
+
+  cat(lines, sep = "\n")
+  cat("\n")
 
   invisible(x)
 }

@@ -1,5 +1,9 @@
 # anicheck (development version)
 
+## Fixed
+
+* `print()` on a check object writes its summary to stdout as one block, instead of emitting it as nine messages on stderr. `capture.output(print(x))` returned nothing at all before, and `suppressMessages()` removed the summary entirely — so a pipeline wrapped in `suppressMessages()` to quiet a repetitive warning also lost its check output. The rendered summary is unchanged (#30).
+
 # anicheck 0.3.0 (2026-08-28)
 
 ## Changed
