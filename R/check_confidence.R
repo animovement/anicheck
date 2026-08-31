@@ -67,6 +67,10 @@ check_confidence.aniframe <- function(data, n = 256, ...) {
     rbind,
     lapply(parts, confidence_density, group_cols = group_cols, n = n)
   )
+  # No groups means no densities, and do.call(rbind, list()) is NULL.
+  if (is.null(grid)) {
+    grid <- empty_density(group_cols)
+  }
   rownames(grid) <- NULL
 
   new_check_confidence(
@@ -94,6 +98,18 @@ confidence_density <- function(d, group_cols, n) {
     out[[col]] <- d[[col]][1]
   }
   out[c(group_cols, "value", "density")]
+}
+
+# Internal: the shape confidence_density() returns, with no rows. A frame with
+# no observations has no densities to estimate, but the check still has to say
+# what it looked at.
+#' @keywords internal
+empty_density <- function(group_cols) {
+  cols <- c(
+    stats::setNames(rep(list(character(0)), length(group_cols)), group_cols),
+    list(value = numeric(0), density = numeric(0))
+  )
+  do.call(data.frame, c(cols, stringsAsFactors = FALSE))
 }
 
 # Internal: low-level constructor.

@@ -2,6 +2,14 @@
 
 ## Fixed
 
+* The checks handle an aniframe with no rows (#32). `check_confidence()` aborted with `attempt to set an attribute on NULL`, and `check_na_timing()` warned twice about `min()` and `max()` having "no non-missing arguments" — neither message mentioning the frame being empty, which is what was actually wrong. An empty frame is a normal product of a grouped pipeline, not a malformed input: `dplyr::filter()` gives one whenever a group matches nothing.
+
+  All three now return an empty check, as `check_na_gapsize()` already did.
+
+* An empty check survives its own `summary()` and `print()`. `do.call(rbind, list())` is `NULL`, so a check built from no groups carried a `NULL` where its methods expect a table, and both failed with `invalid argument type`. This affected `check_na_gapsize()` too, whose empty case otherwise worked (#32).
+
+## Fixed
+
 * `print()` on a check object writes its summary to stdout as one block, instead of emitting it as nine messages on stderr. `capture.output(print(x))` returned nothing at all before, and `suppressMessages()` removed the summary entirely — so a pipeline wrapped in `suppressMessages()` to quiet a repetitive warning also lost its check output. The rendered summary is unchanged (#30).
 
 # anicheck 0.3.0 (2026-08-28)
