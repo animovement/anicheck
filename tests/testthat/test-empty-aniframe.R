@@ -6,12 +6,13 @@
 # methods.
 
 empty_frame <- function() {
-  af <- anicore::example_aniframe(
+  # Subset to no rows rather than dplyr::filter(af, FALSE): dplyr is not a
+  # dependency of this package, and `[` keeps the aniframe class and metadata.
+  anicore::example_aniframe(
     n_individuals = 1,
     n_keypoints = 1,
     n_obs = 5
-  )
-  dplyr::filter(af, FALSE)
+  )[0, ]
 }
 
 test_that("every check returns an empty check for an empty frame", {
