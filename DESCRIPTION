@@ -19,7 +19,7 @@ LazyData: true
 Depends:
     R (>= 4.1.0)
 Imports:
-    anicore (>= 0.8.0),
+    anicore (>= 0.8.0.9003 dep=anivis=0.2.1.9002),
     cli,
     rlang,
     stats,
