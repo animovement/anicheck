@@ -1,14 +1,14 @@
-# Tests for checks on an aniframe with no rows (#32)
+# Tests for checks on an anipoint with no rows (#32)
 # --------------------------------------------------
 # dplyr::filter() produces one from any grouped pipeline where a group matches
-# nothing, and it is still a valid aniframe. All three checks should agree about
+# nothing, and it is still a valid anipoint. All three checks should agree about
 # what to do with it, and the objects they return have to survive their own
 # methods.
 
 empty_frame <- function() {
   # Subset to no rows rather than dplyr::filter(af, FALSE): dplyr is not a
-  # dependency of this package, and `[` keeps the aniframe class and metadata.
-  anicore::example_aniframe(
+  # dependency of this package, and `[` keeps the anipoint class and metadata.
+  anicore::example_anipoint(
     n_individuals = 1,
     n_keypoints = 1,
     n_obs = 5
@@ -48,4 +48,20 @@ test_that("checking an empty frame is silent", {
   expect_no_warning(check_confidence(empty))
   expect_no_warning(check_na_gapsize(empty))
   expect_no_warning(check_na_timing(empty))
+})
+
+test_that("every check rejects an anievent, which has no position index", {
+  ev <- anicore::as_anievent(data.frame(
+    channel = "behaviour",
+    type = "state",
+    label = "rest",
+    start = 1,
+    stop = 2,
+    x = NA_real_,
+    confidence = 0.5
+  ))
+
+  for (check in list(check_confidence, check_na_gapsize, check_na_timing)) {
+    expect_error(check(ev), "must be an anipoint")
+  }
 })

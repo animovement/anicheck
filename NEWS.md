@@ -1,5 +1,9 @@
 # anicheck (development version)
 
+## Changed
+
+* Works with anicore's `anipoint` class and rebuilt accessor API (animovement/anicore#154). The checks dispatch on `anipoint`, so an `anievent` is rejected with a clear error, and they read time from the frame's index rather than assuming a `time` column.
+
 ## Fixed
 
 * The checks handle an aniframe with no rows (#32). `check_confidence()` aborted with `attempt to set an attribute on NULL`, and `check_na_timing()` warned twice about `min()` and `max()` having "no non-missing arguments" — neither message mentioning the frame being empty, which is what was actually wrong. An empty frame is a normal product of a grouped pipeline, not a malformed input: `dplyr::filter()` gives one whenever a group matches nothing.

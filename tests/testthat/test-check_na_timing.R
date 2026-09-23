@@ -3,7 +3,7 @@
 make_na_single <- function() {
   # x: gap at t2-3 (len 2) and t8 (len 1).  y: an isolated NA at t5 (its
   # neighbours t4/t6 are present in x too, so it stays its own run in the union).
-  anicore::as_aniframe(data.frame(
+  anicore::as_anipoint(data.frame(
     time = 1:8,
     x = c(1, NA, NA, 4, 5, 6, 7, NA),
     y = c(1, 1, 1, 1, NA, 1, 1, 1)
@@ -12,7 +12,7 @@ make_na_single <- function() {
 
 make_na_multi_keypoint <- function() {
   # head: gap at t2-3 (len 2).  tail: no gaps.
-  anicore::as_aniframe(data.frame(
+  anicore::as_anipoint(data.frame(
     keypoint = rep(c("head", "tail"), each = 6),
     time = rep(1:6, 2),
     x = c(1, NA, NA, 4, 5, 6, 1, 2, 3, 4, 5, 6)
@@ -48,15 +48,15 @@ test_that("check_na_timing keeps grouping columns and per-group totals", {
 })
 
 test_that("check_na_timing handles data with no missing values", {
-  af <- anicore::as_aniframe(data.frame(time = 1:5, x = 1:5))
+  af <- anicore::as_anipoint(data.frame(time = 1:5, x = 1:5))
   out <- check_na_timing(af)
   expect_equal(nrow(out), 0L)
   expect_equal(summary(out)$n_gaps, 0L)
 })
 
-test_that("check_na_timing errors on non-aniframe and unknown variable", {
+test_that("check_na_timing errors on non-anipoint and unknown variable", {
   df <- data.frame(time = 1:5, x = rnorm(5))
-  expect_error(check_na_timing(df), "must be an aniframe")
+  expect_error(check_na_timing(df), "must be an anipoint")
   expect_error(
     check_na_timing(make_na_single(), variable = "nope"),
     "unknown column"
@@ -89,7 +89,7 @@ test_that("print.check_na_timing returns the object invisibly", {
 })
 
 test_that("check_na_timing uses a unit time step when groups are single-frame", {
-  af <- anicore::as_aniframe(data.frame(
+  af <- anicore::as_anipoint(data.frame(
     keypoint = c("a", "b"),
     time = c(1, 1),
     x = c(NA, 2)
@@ -100,4 +100,15 @@ test_that("check_na_timing uses a unit time step when groups are single-frame", 
 test_that("na_timing_step falls back to 1 for non-increasing times", {
   # Zero (or negative) spacing cannot scale a gap width, so it defaults to 1.
   expect_equal(na_timing_step(list(data.frame(time = c(2, 2)))), 1)
+})
+
+test_that("check_na_timing reads times from the index, whatever its name", {
+  af <- anicore::as_anipoint(
+    data.frame(keypoint = "head", frame = 1:5, x = c(1, NA, NA, 4, 5)),
+    index = "frame"
+  )
+  out <- check_na_timing(af)
+  expect_equal(out$start, 2)
+  expect_equal(out$stop, 3)
+  expect_equal(attr(out, "time_range"), c(1, 5))
 })

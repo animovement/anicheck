@@ -3,17 +3,17 @@
 \name{check_na_timing}
 \alias{check_na_timing}
 \alias{check_na_timing.default}
-\alias{check_na_timing.aniframe}
+\alias{check_na_timing.anipoint}
 \title{Check the Timing of Missing Values}
 \usage{
 check_na_timing(data, ...)
 
 \method{check_na_timing}{default}(data, ...)
 
-\method{check_na_timing}{aniframe}(data, variable = "x", ...)
+\method{check_na_timing}{anipoint}(data, variable = "x", ...)
 }
 \arguments{
-\item{data}{An aniframe object.}
+\item{data}{An anipoint (position frame).}
 
 \item{...}{Additional arguments (currently unused).}
 
@@ -23,7 +23,7 @@ counts as missing when \emph{any} named column is \code{NA} there. Defaults to
 }
 \value{
 A data frame of class \code{check_na_timing} with one row per missing run:
-the aniframe's grouping columns (every \code{variables_what} and non-time
+the anipoint's grouping columns (every \code{variables_what} and context
 \code{variables_when} column), the run's \code{start} and \code{stop} time, and its
 \code{length} in frames. Per-group totals (frame and missing counts, time
 range), the checked variable(s), the time unit, and the typical time step
@@ -31,7 +31,7 @@ are stored as attributes for the \code{summary()}, \code{print()}, and plotting
 methods. Use \code{\link[=summary]{summary()}} for a per-group overview.
 }
 \description{
-Finds the runs of consecutive missing values (\code{NA}) in an aniframe and
+Finds the runs of consecutive missing values (\code{NA}) in an anipoint and
 returns them as a compact table - \strong{one row per gap}, not per frame. Where
 the gaps fall (at the start, the end, scattered, or in long bursts) is often
 more telling than how many there are; this check exposes that timing, and
@@ -50,7 +50,7 @@ in the companion package draws it. (\verb{check_*()} functions are destined for 
 \pkg{anicheck} package; they are kept here for now for convenience.)
 }
 \examples{
-af <- anicore::as_aniframe(data.frame(
+af <- anicore::as_anipoint(data.frame(
   keypoint = rep(c("head", "tail"), each = 6),
   time = rep(1:6, 2),
   x = c(1, NA, NA, 4, 5, 6, 1, 2, 3, 4, 5, 6)

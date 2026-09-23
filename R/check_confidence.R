@@ -17,7 +17,7 @@
 #' destined for the \pkg{anicheck} package; they are kept here for now for
 #' convenience.)
 #'
-#' @param data An aniframe object with a `confidence` column.
+#' @param data An anipoint (position frame) with a `confidence` column.
 #' @param n Density grid resolution per keypoint. Default `256`.
 #' @param ... Additional arguments (currently unused).
 #'
@@ -30,7 +30,7 @@
 #' @seealso [plot.check_confidence()]
 #'
 #' @examples
-#' af <- anicore::as_aniframe(data.frame(
+#' af <- anicore::as_anipoint(data.frame(
 #'   keypoint = rep(c("head", "tail"), each = 50),
 #'   time = rep(1:50, 2),
 #'   x = rnorm(100),
@@ -47,21 +47,21 @@ check_confidence <- function(data, ...) {
 #' @rdname check_confidence
 #' @export
 check_confidence.default <- function(data, ...) {
-  cli::cli_abort("{.arg data} must be an aniframe.")
+  cli::cli_abort("{.arg data} must be an anipoint.")
 }
 
 #' @rdname check_confidence
 #' @export
-check_confidence.aniframe <- function(data, n = 256, ...) {
+check_confidence.anipoint <- function(data, n = 256, ...) {
   if (!("confidence" %in% names(data))) {
     cli::cli_abort(
       "{.fun check_confidence} needs a {.field confidence} column."
     )
   }
-  group_cols <- aniframe_group_cols(data)
-  decl <- aniframe_declarations(data)
+  group_cols <- anipoint_group_cols(data)
+  decl <- anipoint_declarations(data)
 
-  df <- as.data.frame(data)
+  df <- anipoint_df(data)
   parts <- split_by_group_cols(df, group_cols)
   grid <- do.call(
     rbind,

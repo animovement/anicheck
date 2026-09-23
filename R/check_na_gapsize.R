@@ -1,7 +1,7 @@
 #' Check the Distribution of Missing-Value Gap Sizes
 #'
 #' Tabulates the *lengths* of the runs of consecutive missing values (`NA`) in an
-#' aniframe - how often a gap of each size occurs. A recording riddled with
+#' anipoint - how often a gap of each size occurs. A recording riddled with
 #' single-frame dropouts (easy to interpolate) has a very different gap-size
 #' profile from one with a few long blackouts (which interpolation cannot
 #' rescue), even when their total missing counts match; this check exposes that
@@ -13,14 +13,14 @@
 #' destined for the \pkg{anicheck} package; they are kept here for now for
 #' convenience.)
 #'
-#' @param data An aniframe object.
+#' @param data An anipoint (position frame).
 #' @param variable Name(s) of the column(s) whose missingness to track. A frame
 #'   counts as missing when *any* named column is `NA` there. Defaults to
 #'   `"x"`.
 #' @param ... Additional arguments (currently unused).
 #'
 #' @return A data frame of class `check_na_gapsize` with one row per
-#'   (group, gap size): the aniframe's grouping columns, the `gap_size` (run
+#'   (group, gap size): the anipoint's grouping columns, the `gap_size` (run
 #'   length in frames), the number of gaps of that size (`n_gaps`), and the total
 #'   missing frames they account for (`n_na` = `gap_size` x `n_gaps`). Per-group
 #'   totals and the checked variable(s) are stored as attributes. Use
@@ -29,7 +29,7 @@
 #' @seealso [plot.check_na_gapsize()]
 #'
 #' @examples
-#' af <- anicore::as_aniframe(data.frame(
+#' af <- anicore::as_anipoint(data.frame(
 #'   keypoint = rep(c("head", "tail"), each = 8),
 #'   time = rep(1:8, 2),
 #'   x = c(1, NA, NA, 4, NA, NA, 7, 8, 1, NA, 3, 4, 5, 6, 7, 8)
@@ -45,17 +45,17 @@ check_na_gapsize <- function(data, ...) {
 #' @rdname check_na_gapsize
 #' @export
 check_na_gapsize.default <- function(data, ...) {
-  cli::cli_abort("{.arg data} must be an aniframe.")
+  cli::cli_abort("{.arg data} must be an anipoint.")
 }
 
 #' @rdname check_na_gapsize
 #' @export
-check_na_gapsize.aniframe <- function(data, variable = "x", ...) {
+check_na_gapsize.anipoint <- function(data, variable = "x", ...) {
   variable <- check_na_variable(data, variable)
-  group_cols <- aniframe_group_cols(data)
-  decl <- aniframe_declarations(data)
+  group_cols <- anipoint_group_cols(data)
+  decl <- anipoint_declarations(data)
 
-  df <- as.data.frame(data)
+  df <- anipoint_df(data)
   df$.missing <- Reduce(`|`, lapply(variable, function(v) is.na(df[[v]])))
 
   parts <- split_by_group_cols(df, group_cols)
@@ -81,7 +81,7 @@ check_na_gapsize.aniframe <- function(data, variable = "x", ...) {
 # Internal: tabulate one group's gap lengths into rows of (gap_size, n_gaps,
 # n_na), ascending by size. Returns NULL when the group has no gaps.
 na_gapsize_tabulate <- function(d, group_cols) {
-  runs <- rle(d$.missing[order(d$time)])
+  runs <- rle(d$.missing[order(d$.time)])
   lengths <- runs$lengths[runs$values]
   if (!length(lengths)) {
     return(NULL)

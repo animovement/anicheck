@@ -3,17 +3,17 @@
 \name{check_na_gapsize}
 \alias{check_na_gapsize}
 \alias{check_na_gapsize.default}
-\alias{check_na_gapsize.aniframe}
+\alias{check_na_gapsize.anipoint}
 \title{Check the Distribution of Missing-Value Gap Sizes}
 \usage{
 check_na_gapsize(data, ...)
 
 \method{check_na_gapsize}{default}(data, ...)
 
-\method{check_na_gapsize}{aniframe}(data, variable = "x", ...)
+\method{check_na_gapsize}{anipoint}(data, variable = "x", ...)
 }
 \arguments{
-\item{data}{An aniframe object.}
+\item{data}{An anipoint (position frame).}
 
 \item{...}{Additional arguments (currently unused).}
 
@@ -23,7 +23,7 @@ counts as missing when \emph{any} named column is \code{NA} there. Defaults to
 }
 \value{
 A data frame of class \code{check_na_gapsize} with one row per
-(group, gap size): the aniframe's grouping columns, the \code{gap_size} (run
+(group, gap size): the anipoint's grouping columns, the \code{gap_size} (run
 length in frames), the number of gaps of that size (\code{n_gaps}), and the total
 missing frames they account for (\code{n_na} = \code{gap_size} x \code{n_gaps}). Per-group
 totals and the checked variable(s) are stored as attributes. Use
@@ -31,7 +31,7 @@ totals and the checked variable(s) are stored as attributes. Use
 }
 \description{
 Tabulates the \emph{lengths} of the runs of consecutive missing values (\code{NA}) in an
-aniframe - how often a gap of each size occurs. A recording riddled with
+anipoint - how often a gap of each size occurs. A recording riddled with
 single-frame dropouts (easy to interpolate) has a very different gap-size
 profile from one with a few long blackouts (which interpolation cannot
 rescue), even when their total missing counts match; this check exposes that
@@ -45,7 +45,7 @@ destined for the \pkg{anicheck} package; they are kept here for now for
 convenience.)
 }
 \examples{
-af <- anicore::as_aniframe(data.frame(
+af <- anicore::as_anipoint(data.frame(
   keypoint = rep(c("head", "tail"), each = 8),
   time = rep(1:8, 2),
   x = c(1, NA, NA, 4, NA, NA, 7, 8, 1, NA, 3, 4, 5, 6, 7, 8)
