@@ -50,8 +50,8 @@ anipoint_group_cols <- function(data) {
 # or trial rather than the finest identity (animovement/anivis#21).
 anipoint_declarations <- function(data) {
   list(
-    variables_what = anicore::get_variables(data, "what"),
-    variables_when = anicore::get_variables(data, "when", "keys")
+    what = anicore::get_variables(data, "what"),
+    when = anicore::get_variables(data, "when", "keys")
   )
 }
 

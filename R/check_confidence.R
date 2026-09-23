@@ -77,8 +77,8 @@ check_confidence.anipoint <- function(data, n = 256, ...) {
     grid,
     group_cols = group_cols,
     groups = distribution_summary(df, group_cols, "confidence"),
-    variables_what = decl$variables_what,
-    variables_when = decl$variables_when
+    variables_what = decl$what,
+    variables_when = decl$when
   )
 }
 

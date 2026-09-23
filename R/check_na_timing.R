@@ -95,8 +95,8 @@ check_na_timing.anipoint <- function(data, variable = "x", ...) {
       NA_character_
     },
     group_cols = group_cols,
-    variables_what = decl$variables_what,
-    variables_when = decl$variables_when,
+    variables_what = decl$what,
+    variables_when = decl$when,
     groups = groups,
     time_step = na_timing_step(parts),
     time_range = if (nrow(df)) {

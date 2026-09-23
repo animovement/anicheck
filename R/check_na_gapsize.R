@@ -73,8 +73,8 @@ check_na_gapsize.anipoint <- function(data, variable = "x", ...) {
     variable = variable,
     group_cols = group_cols,
     groups = group_totals(df, group_cols),
-    variables_what = decl$variables_what,
-    variables_when = decl$variables_when
+    variables_what = decl$what,
+    variables_when = decl$when
   )
 }
 
