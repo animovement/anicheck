@@ -1,6 +1,6 @@
 #' Check the Timing of Missing Values
 #'
-#' Finds the runs of consecutive missing values (`NA`) in an aniframe and
+#' Finds the runs of consecutive missing values (`NA`) in an anipoint and
 #' returns them as a compact table - **one row per gap**, not per frame. Where
 #' the gaps fall (at the start, the end, scattered, or in long bursts) is often
 #' more telling than how many there are; this check exposes that timing, and
@@ -17,14 +17,14 @@
 #' in the companion package draws it. (`check_*()` functions are destined for the
 #' \pkg{anicheck} package; they are kept here for now for convenience.)
 #'
-#' @param data An aniframe object.
+#' @param data An anipoint (position frame).
 #' @param variable Name(s) of the column(s) whose missingness to track. A frame
 #'   counts as missing when *any* named column is `NA` there. Defaults to
 #'   `"x"`.
 #' @param ... Additional arguments (currently unused).
 #'
 #' @return A data frame of class `check_na_timing` with one row per missing run:
-#'   the aniframe's grouping columns (every `variables_what` and non-time
+#'   the anipoint's grouping columns (every `variables_what` and context
 #'   `variables_when` column), the run's `start` and `stop` time, and its
 #'   `length` in frames. Per-group totals (frame and missing counts, time
 #'   range), the checked variable(s), the time unit, and the typical time step
@@ -34,7 +34,7 @@
 #' @seealso [plot.check_na_timing()], [summary.check_na_timing()]
 #'
 #' @examples
-#' af <- anicore::as_aniframe(data.frame(
+#' af <- anicore::as_anipoint(data.frame(
 #'   keypoint = rep(c("head", "tail"), each = 6),
 #'   time = rep(1:6, 2),
 #'   x = c(1, NA, NA, 4, 5, 6, 1, 2, 3, 4, 5, 6)
@@ -50,18 +50,18 @@ check_na_timing <- function(data, ...) {
 #' @rdname check_na_timing
 #' @export
 check_na_timing.default <- function(data, ...) {
-  cli::cli_abort("{.arg data} must be an aniframe.")
+  cli::cli_abort("{.arg data} must be an anipoint.")
 }
 
 #' @rdname check_na_timing
 #' @export
-check_na_timing.aniframe <- function(data, variable = "x", ...) {
+check_na_timing.anipoint <- function(data, variable = "x", ...) {
   variable <- check_na_variable(data, variable)
-  meta <- anicore::get_metadata(data)
-  group_cols <- aniframe_group_cols(data)
-  decl <- aniframe_declarations(data)
+  unit_time <- anicore::get_metadata(data, "unit_time")
+  group_cols <- anipoint_group_cols(data)
+  decl <- anipoint_declarations(data)
 
-  df <- as.data.frame(data)
+  df <- anipoint_df(data)
   df$.missing <- Reduce(`|`, lapply(variable, function(v) is.na(df[[v]])))
 
   parts <- split_by_group_cols(df, group_cols)
@@ -89,18 +89,18 @@ check_na_timing.aniframe <- function(data, variable = "x", ...) {
   new_check_na_timing(
     segments,
     variable = variable,
-    unit_time = if (!is.null(meta$unit_time)) {
-      as.character(meta$unit_time)
+    unit_time = if (!is.null(unit_time)) {
+      as.character(unit_time)
     } else {
       NA_character_
     },
     group_cols = group_cols,
-    variables_what = decl$variables_what,
-    variables_when = decl$variables_when,
+    variables_what = decl$what,
+    variables_when = decl$when,
     groups = groups,
     time_step = na_timing_step(parts),
     time_range = if (nrow(df)) {
-      c(min(df$time), max(df$time))
+      c(min(df$.time), max(df$.time))
     } else {
       rep(NA_real_, 2)
     }
@@ -148,7 +148,7 @@ new_check_na_timing <- function(
 # one row per missing run: the group columns, the run's start/stop time, and its
 # length in frames. Returns NULL when the group has no missing values.
 na_timing_runs <- function(d, group_cols) {
-  d <- d[order(d$time), , drop = FALSE]
+  d <- d[order(d$.time), , drop = FALSE]
   runs <- rle(d$.missing)
   ends <- cumsum(runs$lengths)
   starts <- ends - runs$lengths + 1L
@@ -157,8 +157,8 @@ na_timing_runs <- function(d, group_cols) {
     return(NULL)
   }
   out <- data.frame(
-    start = d$time[starts[keep]],
-    stop = d$time[ends[keep]],
+    start = d$.time[starts[keep]],
+    stop = d$.time[ends[keep]],
     length = runs$lengths[keep]
   )
   for (col in group_cols) {
@@ -172,8 +172,8 @@ na_timing_totals <- function(d, group_cols) {
   out <- data.frame(
     n_frames = nrow(d),
     n_missing = sum(d$.missing),
-    time_min = min(d$time),
-    time_max = max(d$time)
+    time_min = min(d$.time),
+    time_max = max(d$.time)
   )
   for (col in group_cols) {
     out[[col]] <- d[[col]][1]
@@ -186,7 +186,7 @@ na_timing_totals <- function(d, group_cols) {
 # back to 1 when it cannot be estimated (e.g. one frame per group).
 na_timing_step <- function(parts) {
   steps <- unlist(
-    lapply(parts, function(d) diff(sort(d$time))),
+    lapply(parts, function(d) diff(sort(d$.time))),
     use.names = FALSE
   )
   if (!length(steps)) {

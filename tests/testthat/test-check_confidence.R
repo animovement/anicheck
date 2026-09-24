@@ -1,7 +1,7 @@
 # Tests for check_confidence(), its summary/print, and its plot method.
 
 make_conf <- function() {
-  af <- anicore::as_aniframe(data.frame(
+  af <- anicore::as_anipoint(data.frame(
     keypoint = rep(c("head", "tail"), each = 4),
     time = rep(1:4, 2),
     x = rnorm(8),
@@ -27,15 +27,15 @@ test_that("check_confidence keeps a per-keypoint summary for the overlay", {
   expect_equal(head_row$median, 0.85)
 })
 
-test_that("check_confidence errors without a confidence column or aniframe", {
-  af <- anicore::as_aniframe(data.frame(
+test_that("check_confidence errors without a confidence column or anipoint", {
+  af <- anicore::as_anipoint(data.frame(
     keypoint = rep("head", 3),
     time = 1:3,
     x = 1:3,
     y = 1:3
   ))
   expect_error(check_confidence(af), "confidence")
-  expect_error(check_confidence(data.frame(confidence = 0.5)), "aniframe")
+  expect_error(check_confidence(data.frame(confidence = 0.5)), "anipoint")
 })
 
 test_that("summary.check_confidence reports median, iqr and worst case", {
@@ -50,7 +50,7 @@ test_that("print.check_confidence returns the object invisibly", {
 })
 
 test_that("check_confidence collapses a constant-confidence keypoint to a spike", {
-  af <- anicore::as_aniframe(data.frame(
+  af <- anicore::as_anipoint(data.frame(
     keypoint = rep(c("flat", "vary"), each = 4),
     time = rep(1:4, 2),
     x = rnorm(8),
@@ -65,7 +65,7 @@ test_that("check_confidence collapses a constant-confidence keypoint to a spike"
 })
 
 test_that("check_confidence summarises an all-missing-confidence keypoint as NA", {
-  af <- anicore::as_aniframe(data.frame(
+  af <- anicore::as_anipoint(data.frame(
     keypoint = rep(c("none", "ok"), each = 4),
     time = rep(1:4, 2),
     x = rnorm(8),
@@ -83,7 +83,7 @@ test_that("check_confidence summarises an all-missing-confidence keypoint as NA"
 })
 
 test_that("print.check_confidence labels an ungrouped check 'all'", {
-  # A valid aniframe always has at least one identity column, but the print
+  # A valid anipoint always has at least one identity column, but the print
   # method defends against an empty grouping by labelling the lone row "all".
   obj <- new_check_confidence(
     data.frame(value = c(0, 1), density = c(0, 1)),
@@ -119,13 +119,16 @@ test_that("check objects carry the declarations group_cols is built from", {
     y = rnorm(n),
     confidence = runif(n)
   )
-  af <- anicore::as_aniframe(d, variables_what = c("animal", "bodypart"))
+  af <- anicore::as_anipoint(d, variables_what = c("animal", "bodypart"))
 
   chk <- check_confidence(af)
 
   expect_equal(attr(chk, "group_cols"), c("animal", "bodypart", "session"))
-  # The aniframe metadata fields verbatim, under their own names.
-  expect_equal(attr(chk, "variables_what"), anicore::get_variables_what(af))
+  # The anipoint metadata fields verbatim, under their own names.
+  expect_equal(attr(chk, "variables_what"), anicore::get_variables(af, "what"))
   expect_equal(attr(chk, "variables_what"), c("animal", "bodypart"))
-  expect_equal(attr(chk, "variables_when"), anicore::get_variables_when(af))
+  expect_equal(
+    attr(chk, "variables_when"),
+    anicore::get_variables(af, "when", "keys")
+  )
 })

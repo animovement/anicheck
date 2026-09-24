@@ -5,7 +5,7 @@
 # 3. One print() is one block, not one condition per line
 
 make_check <- function() {
-  af <- anicore::as_aniframe(data.frame(
+  af <- anicore::as_anipoint(data.frame(
     keypoint = rep(c("head", "tail"), each = 4),
     time = rep(1:4, 2),
     x = c(rnorm(3), NA, rnorm(4)),

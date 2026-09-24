@@ -36,28 +36,31 @@ group_key <- function(tbl, group_cols) {
   )
 }
 
-# Internal: the grouping columns of an aniframe - every `variables_what` and
-# non-time `variables_when` column. Derived straight from the metadata so the
-# check_* family has no dependency on anivis internals.
-aniframe_group_cols <- function(data) {
-  meta <- anicore::get_metadata(data)
-  what <- intersect(meta$variables_what, names(data))
-  when <- setdiff(intersect(meta$variables_when, names(data)), "time")
-  unique(c(what, when))
+# Internal: the grouping columns of an anipoint - its identity and context keys.
+# Derived straight from the metadata so the check_* family has no dependency on
+# anivis internals.
+anipoint_group_cols <- function(data) {
+  intersect(anicore::get_keys(data), names(data))
 }
 
 # Internal: the declarations `group_cols` is built from, carried through to
 # the check object under their own names. `group_cols` concatenates identity
 # and temporal context, so a consumer cannot tell where one ends and the
 # other begins — and picking "the last grouping column" can land on a session
-# or trial rather than the finest identity (animovement/anivis#21). These are
-# the aniframe metadata fields verbatim, not a new concept.
-aniframe_declarations <- function(data) {
-  meta <- anicore::get_metadata(data)
+# or trial rather than the finest identity (animovement/anivis#21).
+anipoint_declarations <- function(data) {
   list(
-    variables_what = meta$variables_what,
-    variables_when = meta$variables_when
+    what = anicore::get_variables(data, "what"),
+    when = anicore::get_variables(data, "when", "keys")
   )
+}
+
+# Internal: a plain data frame of an anipoint with its index copied to `.time`,
+# so the helpers need not know what the index column is called.
+anipoint_df <- function(data) {
+  df <- as.data.frame(data)
+  df$.time <- df[[anicore::get_index(data)]]
+  df
 }
 
 # Internal: validate the requested variable(s). Missingness is meaningful for
@@ -90,8 +93,8 @@ group_totals <- function(df, group_cols) {
       row <- data.frame(
         n_frames = nrow(d),
         n_missing = sum(d$.missing),
-        time_min = min(d$time),
-        time_max = max(d$time)
+        time_min = min(d$.time),
+        time_max = max(d$.time)
       )
       for (col in group_cols) {
         row[[col]] <- d[[col]][1]

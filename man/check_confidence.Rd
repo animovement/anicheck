@@ -3,17 +3,17 @@
 \name{check_confidence}
 \alias{check_confidence}
 \alias{check_confidence.default}
-\alias{check_confidence.aniframe}
+\alias{check_confidence.anipoint}
 \title{Check the Distribution of Tracking Confidence}
 \usage{
 check_confidence(data, ...)
 
 \method{check_confidence}{default}(data, ...)
 
-\method{check_confidence}{aniframe}(data, n = 256, ...)
+\method{check_confidence}{anipoint}(data, n = 256, ...)
 }
 \arguments{
-\item{data}{An aniframe object with a \code{confidence} column.}
+\item{data}{An anipoint (position frame) with a \code{confidence} column.}
 
 \item{...}{Additional arguments (currently unused).}
 
@@ -46,7 +46,7 @@ destined for the \pkg{anicheck} package; they are kept here for now for
 convenience.)
 }
 \examples{
-af <- anicore::as_aniframe(data.frame(
+af <- anicore::as_anipoint(data.frame(
   keypoint = rep(c("head", "tail"), each = 50),
   time = rep(1:50, 2),
   x = rnorm(100),
