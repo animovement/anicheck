@@ -2,6 +2,13 @@
 
 ## anicheck (development version)
 
+### Changed
+
+- Works with anicore’s `anipoint` class and rebuilt accessor API
+  (animovement/anicore#154). The checks dispatch on `anipoint`, so an
+  `anievent` is rejected with a clear error, and they read time from the
+  frame’s index rather than assuming a `time` column.
+
 ### Fixed
 
 - The checks handle an aniframe with no rows

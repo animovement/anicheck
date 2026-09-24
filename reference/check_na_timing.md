@@ -1,6 +1,6 @@
 # Check the Timing of Missing Values
 
-Finds the runs of consecutive missing values (`NA`) in an aniframe and
+Finds the runs of consecutive missing values (`NA`) in an anipoint and
 returns them as a compact table - **one row per gap**, not per frame.
 Where the gaps fall (at the start, the end, scattered, or in long
 bursts) is often more telling than how many there are; this check
@@ -16,7 +16,7 @@ check_na_timing(data, ...)
 # Default S3 method
 check_na_timing(data, ...)
 
-# S3 method for class 'aniframe'
+# S3 method for class 'anipoint'
 check_na_timing(data, variable = "x", ...)
 ```
 
@@ -24,7 +24,7 @@ check_na_timing(data, variable = "x", ...)
 
 - data:
 
-  An aniframe object.
+  An anipoint (position frame).
 
 - ...:
 
@@ -38,7 +38,7 @@ check_na_timing(data, variable = "x", ...)
 ## Value
 
 A data frame of class `check_na_timing` with one row per missing run:
-the aniframe's grouping columns (every `variables_what` and non-time
+the anipoint's grouping columns (every `variables_what` and context
 `variables_when` column), the run's `start` and `stop` time, and its
 `length` in frames. Per-group totals (frame and missing counts, time
 range), the checked variable(s), the time unit, and the typical time
@@ -72,7 +72,7 @@ convenience.)
 ## Examples
 
 ``` r
-af <- anicore::as_aniframe(data.frame(
+af <- anicore::as_anipoint(data.frame(
   keypoint = rep(c("head", "tail"), each = 6),
   time = rep(1:6, 2),
   x = c(1, NA, NA, 4, 5, 6, 1, 2, 3, 4, 5, 6)

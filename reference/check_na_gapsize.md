@@ -1,7 +1,7 @@
 # Check the Distribution of Missing-Value Gap Sizes
 
 Tabulates the *lengths* of the runs of consecutive missing values (`NA`)
-in an aniframe - how often a gap of each size occurs. A recording
+in an anipoint - how often a gap of each size occurs. A recording
 riddled with single-frame dropouts (easy to interpolate) has a very
 different gap-size profile from one with a few long blackouts (which
 interpolation cannot rescue), even when their total missing counts
@@ -17,7 +17,7 @@ check_na_gapsize(data, ...)
 # Default S3 method
 check_na_gapsize(data, ...)
 
-# S3 method for class 'aniframe'
+# S3 method for class 'anipoint'
 check_na_gapsize(data, variable = "x", ...)
 ```
 
@@ -25,7 +25,7 @@ check_na_gapsize(data, variable = "x", ...)
 
 - data:
 
-  An aniframe object.
+  An anipoint (position frame).
 
 - ...:
 
@@ -39,7 +39,7 @@ check_na_gapsize(data, variable = "x", ...)
 ## Value
 
 A data frame of class `check_na_gapsize` with one row per (group, gap
-size): the aniframe's grouping columns, the `gap_size` (run length in
+size): the anipoint's grouping columns, the `gap_size` (run length in
 frames), the number of gaps of that size (`n_gaps`), and the total
 missing frames they account for (`n_na` = `gap_size` x `n_gaps`).
 Per-group totals and the checked variable(s) are stored as attributes.
@@ -61,7 +61,7 @@ kept here for now for convenience.)
 ## Examples
 
 ``` r
-af <- anicore::as_aniframe(data.frame(
+af <- anicore::as_anipoint(data.frame(
   keypoint = rep(c("head", "tail"), each = 8),
   time = rep(1:8, 2),
   x = c(1, NA, NA, 4, NA, NA, 7, 8, 1, NA, 3, 4, 5, 6, 7, 8)

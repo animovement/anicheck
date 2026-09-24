@@ -16,7 +16,7 @@ check_confidence(data, ...)
 # Default S3 method
 check_confidence(data, ...)
 
-# S3 method for class 'aniframe'
+# S3 method for class 'anipoint'
 check_confidence(data, n = 256, ...)
 ```
 
@@ -24,7 +24,7 @@ check_confidence(data, n = 256, ...)
 
 - data:
 
-  An aniframe object with a `confidence` column.
+  An anipoint (position frame) with a `confidence` column.
 
 - ...:
 
@@ -63,7 +63,7 @@ kept here for now for convenience.)
 ## Examples
 
 ``` r
-af <- anicore::as_aniframe(data.frame(
+af <- anicore::as_anipoint(data.frame(
   keypoint = rep(c("head", "tail"), each = 50),
   time = rep(1:50, 2),
   x = rnorm(100),
