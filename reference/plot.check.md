@@ -16,6 +16,9 @@ plot(x, ...)
 
 # S3 method for class 'check_na_timing'
 plot(x, ...)
+
+# S3 method for class 'check_segment_length'
+plot(x, ...)
 ```
 
 ## Arguments
@@ -25,8 +28,9 @@ plot(x, ...)
   A check object from
   [`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md),
   [`check_na_gapsize()`](https://animovement.dev/anicheck/reference/check_na_gapsize.md),
+  [`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md),
   or
-  [`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md).
+  [`check_segment_length()`](https://animovement.dev/anicheck/reference/check_segment_length.md).
 
 - ...:
 
@@ -40,4 +44,5 @@ A ggplot2 object, drawn by anivis.
 
 [`check_confidence()`](https://animovement.dev/anicheck/reference/check_confidence.md),
 [`check_na_gapsize()`](https://animovement.dev/anicheck/reference/check_na_gapsize.md),
-[`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md)
+[`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md),
+[`check_segment_length()`](https://animovement.dev/anicheck/reference/check_segment_length.md)

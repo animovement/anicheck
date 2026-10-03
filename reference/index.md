@@ -10,3 +10,6 @@ These functions allows you to check the state of your data.
   : Check the Distribution of Missing-Value Gap Sizes
 - [`check_na_timing()`](https://animovement.dev/anicheck/reference/check_na_timing.md)
   : Check the Timing of Missing Values
+- [`check_segment_length()`](https://animovement.dev/anicheck/reference/check_segment_length.md)
+  **\[experimental\]** : Check how much segments vary from their usual
+  length
