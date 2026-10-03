@@ -18,6 +18,7 @@ S3method(summary,check_na_timing)
 export(check_confidence)
 export(check_na_gapsize)
 export(check_na_timing)
+importFrom(lifecycle,deprecated)
 importFrom(rlang,
   ":=",
   .data

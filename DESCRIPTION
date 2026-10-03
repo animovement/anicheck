@@ -21,6 +21,7 @@ Depends:
 Imports:
     anicore (>= 0.8.0.9003),
     cli,
+    lifecycle,
     rlang,
     stats,
     utils
