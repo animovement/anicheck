@@ -1,5 +1,9 @@
 # anicheck (development version)
 
+## Added
+
+* `check_segment_length()` reports how much each segment of a structure varies from its usual length (#39). Per individual and segment it gives the reference length — the structure's `length` when it records one, otherwise the median over the track — the spread of the length as a MAD and a robust coefficient of variation, and the share of frames more than `tolerance` (default 30%) off the reference. The runs of frames off are kept with the check, to see when it happens, and `plot()` draws each segment's length relative to its reference (with anivis 0.2.1.9003 or later). It is experimental: like anicore's structures it is built on, its interface may change without a deprecation cycle.
+
 ## Changed
 
 * Works with anicore's `anipoint` class and rebuilt accessor API (animovement/anicore#154). The checks dispatch on `anipoint`, so an `anievent` is rejected with a clear error, and they read time from the frame's index rather than assuming a `time` column.

@@ -15,7 +15,11 @@ make_check <- function() {
   list(
     confidence = check_confidence(af),
     gapsize = check_na_gapsize(af),
-    timing = check_na_timing(af)
+    timing = check_na_timing(af),
+    segment_length = check_segment_length(anicore::set_structure(
+      af,
+      anicore::anistructure(segments = list(c("head", "tail")))
+    ))
   )
 }
 

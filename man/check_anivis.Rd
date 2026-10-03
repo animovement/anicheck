@@ -4,7 +4,13 @@
 \alias{check_anivis}
 \title{Ensure anivis is available for plotting}
 \usage{
-check_anivis()
+check_anivis(version = NULL)
+}
+\arguments{
+\item{version}{The minimum anivis version the plot needs, or \code{NULL} (the
+default) for any. A check whose plot method arrived in a later anivis
+than the others names that version, so an older installation is updated
+rather than handing the check to a plot method that is not there.}
 }
 \value{
 Called for its side effect; returns invisibly.
