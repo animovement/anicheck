@@ -5,6 +5,7 @@
 \alias{plot.check_confidence}
 \alias{plot.check_na_gapsize}
 \alias{plot.check_na_timing}
+\alias{plot.check_segment_length}
 \title{Plot a Check}
 \usage{
 \method{plot}{check_confidence}(x, ...)
@@ -12,10 +13,12 @@
 \method{plot}{check_na_gapsize}(x, ...)
 
 \method{plot}{check_na_timing}(x, ...)
+
+\method{plot}{check_segment_length}(x, ...)
 }
 \arguments{
-\item{x}{A check object from \code{\link[=check_confidence]{check_confidence()}}, \code{\link[=check_na_gapsize]{check_na_gapsize()}}, or
-\code{\link[=check_na_timing]{check_na_timing()}}.}
+\item{x}{A check object from \code{\link[=check_confidence]{check_confidence()}}, \code{\link[=check_na_gapsize]{check_na_gapsize()}},
+\code{\link[=check_na_timing]{check_na_timing()}}, or \code{\link[=check_segment_length]{check_segment_length()}}.}
 
 \item{...}{Passed on to the corresponding \pkg{anivis} plot method.}
 }
@@ -29,6 +32,7 @@ if not) and then delegate to it. See the linked anivis method for the
 arguments each plot accepts and what it draws.
 }
 \seealso{
-\code{\link[=check_confidence]{check_confidence()}}, \code{\link[=check_na_gapsize]{check_na_gapsize()}}, \code{\link[=check_na_timing]{check_na_timing()}}
+\code{\link[=check_confidence]{check_confidence()}}, \code{\link[=check_na_gapsize]{check_na_gapsize()}}, \code{\link[=check_na_timing]{check_na_timing()}},
+\code{\link[=check_segment_length]{check_segment_length()}}
 }
 \keyword{internal}
