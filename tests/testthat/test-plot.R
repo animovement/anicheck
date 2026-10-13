@@ -23,29 +23,21 @@ test_that("plot.check_* ensure anivis then delegate via NextMethod()", {
   local_mocked_bindings(check_anivis = function() called <<- called + 1L)
 
   # Stand-ins for anivis's real methods so NextMethod() has a target.
-  assign(
-    "plot.anivis_check_confidence",
-    function(x, ...) "confidence",
-    envir = globalenv()
+  local_mocked_s3_method(
+    "plot",
+    "anivis_check_confidence",
+    function(x, ...) "confidence"
   )
-  assign(
-    "plot.anivis_check_na_gapsize",
-    function(x, ...) "gapsize",
-    envir = globalenv()
+  local_mocked_s3_method(
+    "plot",
+    "anivis_check_na_gapsize",
+    function(x, ...) "gapsize"
   )
-  assign(
-    "plot.anivis_check_na_timing",
-    function(x, ...) "timing",
-    envir = globalenv()
+  local_mocked_s3_method(
+    "plot",
+    "anivis_check_na_timing",
+    function(x, ...) "timing"
   )
-  withr::defer(rm(
-    list = c(
-      "plot.anivis_check_confidence",
-      "plot.anivis_check_na_gapsize",
-      "plot.anivis_check_na_timing"
-    ),
-    envir = globalenv()
-  ))
 
   expect_equal(plot(check_confidence(make_conf())), "confidence")
   expect_equal(plot(check_na_gapsize(make_na())), "gapsize")

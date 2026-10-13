@@ -58,6 +58,10 @@ af <- anicore::as_anipoint(data.frame(
 check_na_timing(af)
 summary(check_na_timing(af))
 
+\dontshow{if (requireNamespace("anivis", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# Plot when the values are missing (drawn by anivis)
+plot(check_na_timing(af))
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=plot.check_na_timing]{plot.check_na_timing()}}, \code{\link[=summary.check_na_timing]{summary.check_na_timing()}}

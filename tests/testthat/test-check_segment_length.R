@@ -390,12 +390,11 @@ test_that("plot.check_segment_length ensures a recent anivis, then delegates", {
   local_mocked_bindings(
     check_anivis = function(version = NULL) needed <<- version
   )
-  assign(
-    "plot.anivis_check_segment_length",
-    function(x, ...) "segment length",
-    envir = globalenv()
+  local_mocked_s3_method(
+    "plot",
+    "anivis_check_segment_length",
+    function(x, ...) "segment length"
   )
-  withr::defer(rm("plot.anivis_check_segment_length", envir = globalenv()))
 
   chk <- check_segment_length(make_chain())
   expect_equal(plot(chk), "segment length")

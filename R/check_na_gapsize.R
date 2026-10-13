@@ -37,6 +37,10 @@
 #' check_na_gapsize(af)
 #' summary(check_na_gapsize(af))
 #'
+#' @examplesIf requireNamespace("anivis", quietly = TRUE)
+#' # Plot the gap sizes (drawn by anivis)
+#' plot(check_na_gapsize(af))
+#'
 #' @export
 check_na_gapsize <- function(data, ...) {
   UseMethod("check_na_gapsize")

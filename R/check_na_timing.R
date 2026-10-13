@@ -42,6 +42,10 @@
 #' check_na_timing(af)
 #' summary(check_na_timing(af))
 #'
+#' @examplesIf requireNamespace("anivis", quietly = TRUE)
+#' # Plot when the values are missing (drawn by anivis)
+#' plot(check_na_timing(af))
+#'
 #' @export
 check_na_timing <- function(data, ...) {
   UseMethod("check_na_timing")

@@ -39,6 +39,10 @@
 #' af$confidence <- c(rbeta(50, 8, 2), rbeta(50, 2, 5))
 #' check_confidence(af)
 #'
+#' @examplesIf requireNamespace("anivis", quietly = TRUE)
+#' # Plot the confidence distributions (drawn by anivis)
+#' plot(check_confidence(af))
+#'
 #' @export
 check_confidence <- function(data, ...) {
   UseMethod("check_confidence")

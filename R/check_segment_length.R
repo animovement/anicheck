@@ -92,6 +92,10 @@
 #' # When the segments were off
 #' attr(chk, "off")
 #'
+#' @examplesIf requireNamespace("anivis", quietly = TRUE)
+#' # Plot the segment lengths (drawn by anivis)
+#' plot(chk)
+#'
 #' @export
 check_segment_length <- function(data, ...) {
   UseMethod("check_segment_length")
