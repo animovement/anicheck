@@ -77,4 +77,7 @@ check_confidence(af)
 #> • head: 0.83 [0.49]
 #> • tail: 0.27 [0.03]
 #> 
+
+# Plot the confidence distributions (drawn by anivis)
+plot(check_confidence(af))
 ```

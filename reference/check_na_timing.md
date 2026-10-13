@@ -89,4 +89,7 @@ summary(check_na_timing(af))
 #>   keypoint n_frames n_missing pct_missing n_gaps longest_gap
 #> 1     head        6         2        33.3      1           2
 #> 2     tail        6         0         0.0      0           0
+
+# Plot when the values are missing (drawn by anivis)
+plot(check_na_timing(af))
 ```

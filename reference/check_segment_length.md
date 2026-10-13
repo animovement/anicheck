@@ -295,4 +295,7 @@ attr(chk, "off")
 #> 116          1      shin_left       1     1    40   40        1     0.9800427
 #> 117          1      shin_left       1     1    42   42        1     1.2005405
 #> 118          1      shin_left       1     1    48   48        1     0.4037116
+
+# Plot the segment lengths (drawn by anivis)
+plot(chk)
 ```

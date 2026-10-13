@@ -78,4 +78,7 @@ summary(check_na_gapsize(af))
 #>   keypoint n_frames n_missing pct_missing n_gaps longest_gap
 #> 1     head        8         4        50.0      2           2
 #> 2     tail        8         1        12.5      1           1
+
+# Plot the gap sizes (drawn by anivis)
+plot(check_na_gapsize(af))
 ```
