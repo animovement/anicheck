@@ -111,6 +111,10 @@ summary(chk)
 # When the segments were off
 attr(chk, "off")
 
+\dontshow{if (requireNamespace("anivis", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# Plot the segment lengths (drawn by anivis)
+plot(chk)
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=plot.check_segment_length]{plot.check_segment_length()}}, \code{\link[anicore:as_anisegment]{anicore::as_anisegment()}},

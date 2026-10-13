@@ -55,6 +55,10 @@ af <- anicore::as_anipoint(data.frame(
 af$confidence <- c(rbeta(50, 8, 2), rbeta(50, 2, 5))
 check_confidence(af)
 
+\dontshow{if (requireNamespace("anivis", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# Plot the confidence distributions (drawn by anivis)
+plot(check_confidence(af))
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=plot.check_confidence]{plot.check_confidence()}}

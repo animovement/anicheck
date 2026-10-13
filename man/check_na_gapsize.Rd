@@ -53,6 +53,10 @@ af <- anicore::as_anipoint(data.frame(
 check_na_gapsize(af)
 summary(check_na_gapsize(af))
 
+\dontshow{if (requireNamespace("anivis", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# Plot the gap sizes (drawn by anivis)
+plot(check_na_gapsize(af))
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link[=plot.check_na_gapsize]{plot.check_na_gapsize()}}
