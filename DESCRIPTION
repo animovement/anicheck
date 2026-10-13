@@ -27,8 +27,7 @@ Imports:
     utils
 Suggests:
     anivis (>= 0.2.1.9003),
-    testthat (>= 3.0.0),
-    withr
+    testthat (>= 3.3.0)
 Additional_repositories: https://animovement.r-universe.dev
 Config/Needs/website: animovement/animovementtemplate
 Config/testthat/edition: 3
