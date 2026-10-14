@@ -16,8 +16,6 @@
 
 * An empty check survives its own `summary()` and `print()`. `do.call(rbind, list())` is `NULL`, so a check built from no groups carried a `NULL` where its methods expect a table, and both failed with `invalid argument type`. This affected `check_na_gapsize()` too, whose empty case otherwise worked (#32).
 
-## Fixed
-
 * `print()` on a check object writes its summary to stdout as one block, instead of emitting it as nine messages on stderr. `capture.output(print(x))` returned nothing at all before, and `suppressMessages()` removed the summary entirely — so a pipeline wrapped in `suppressMessages()` to quiet a repetitive warning also lost its check output. The rendered summary is unchanged (#30).
 
 # anicheck 0.3.0 (2026-08-28)
