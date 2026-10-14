@@ -67,11 +67,7 @@
 <p>All three now return an empty check, as <code><a href="../reference/check_na_gapsize.html">check_na_gapsize()</a></code> already did.</p>
 </li>
 <li><p>An empty check survives its own <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code>. <code>do.call(rbind, list())</code> is <code>NULL</code>, so a check built from no groups carried a <code>NULL</code> where its methods expect a table, and both failed with <code>invalid argument type</code>. This affected <code><a href="../reference/check_na_gapsize.html">check_na_gapsize()</a></code> too, whose empty case otherwise worked (<a href="https://github.com/animovement/anicheck/issues/32" class="external-link">#32</a>).</p></li>
-</ul></div>
-<div class="section level3">
-<h3 id="fixed-development-version-1">Fixed<a class="anchor" aria-label="anchor" href="#fixed-development-version-1"></a></h3>
-<ul><li>
-<code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> on a check object writes its summary to stdout as one block, instead of emitting it as nine messages on stderr. <code>capture.output(print(x))</code> returned nothing at all before, and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages()</a></code> removed the summary entirely — so a pipeline wrapped in <code><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages()</a></code> to quiet a repetitive warning also lost its check output. The rendered summary is unchanged (<a href="https://github.com/animovement/anicheck/issues/30" class="external-link">#30</a>).</li>
+<li><p><code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> on a check object writes its summary to stdout as one block, instead of emitting it as nine messages on stderr. <code>capture.output(print(x))</code> returned nothing at all before, and <code><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages()</a></code> removed the summary entirely — so a pipeline wrapped in <code><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressMessages()</a></code> to quiet a repetitive warning also lost its check output. The rendered summary is unchanged (<a href="https://github.com/animovement/anicheck/issues/30" class="external-link">#30</a>).</p></li>
 </ul></div>
 </div>
     <div class="section level2">

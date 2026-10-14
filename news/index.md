@@ -54,8 +54,6 @@
   too, whose empty case otherwise worked
   ([\#32](https://github.com/animovement/anicheck/issues/32)).
 
-### Fixed
-
 - [`print()`](https://rdrr.io/r/base/print.html) on a check object
   writes its summary to stdout as one block, instead of emitting it as
   nine messages on stderr. `capture.output(print(x))` returned nothing
